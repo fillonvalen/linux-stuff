@@ -1,0 +1,74 @@
+19. ENCEDIDO DEL SISTEMA
+     Una manera en la que podemos ver los procesos que pasa el sistema para
+cargarse sería esta:
+      
+     Botón de encendido
+             |
+      código en la ROM
+             |
+         BIOS/UEFI
+             |
+            MBR
+             |
+     Gestor de arranque   
+             |
+           Kernel
+             |
+         initramfs
+             |
+     Sistema operativo           
+                
+* Botón de encendido: aquí una señal eléctrica es enviada al hardware,
+iniciándolo.
+* Código en la ROM: un pedazo de código que inicia la BIOS/UEFI.
+* BIOS/UEFI: en esta parte hay un programa pequeño que puede ser tanto
+uno llamado BIOS (Basic Input/Output System) (casi obsoleto al día de la
+fecha) o UEFI (Unified Extensible Firmware Interface), que, después de
+verificar que estén las piezas más importantes del hardware (POST, o 
+Power-On-Self-Test), detecta los dispositivos de arranque del sistema, como
+por ejemplo un CD, o un pendrive.
+* MBR: cuando el BIOS/UEFI encuentra el dispositivo, busca un pedazo de
+datos que están guaradados en el primer sector de éste último, llamado MBR
+(Master Boot Record) y contiene, aparte de cierta configuración, el gestor de
+arranque.
+* Gestor de arranque: en Linux se llama GRUB (GNU GRand Unified Bootloader),
+y tiene la tarea de cargar el sistema operativo elegido en la memoria,
+empezando por el kernel.
+* Kernel: se encarga de la detección del hardware, el manejo de la memoria,
+la carga del controlador, e iniciar los servicios del sistema, pero no sin
+antes cargar (si existe) un sistema de archivos temporal de nombre
+"initramfs".
+* initramfs: básicamente otorga los controladores, herramientasa y códigos
+necesarios para el correcto montaje del sistema de archivos raíz (o root,
+"/").
+* Sistema operativo: gracias a initramfs, ahora el SO tiene el control total
+de la máquina. En esta etapa da comienzo el primer proceso, que en sistemas
+basados en Debian es "systemd", o también existe "runit" en el caso de Linux
+Void, por ejemplo. Aún así no cambia su objetivo que es el de iniciar
+diversos procesos como el de internet, el de inicio de sesión, y demás
+demonios ("daemons", o procesos en segundo plano. Y sí, así se les
+llama, porque operan en las sombras) que en los sistemas basados en Debian
+se encuentran ubicados en "/etc/init.d".
+
+ (Por cierto, un controlador es software que permite que el SO pueda
+interactuar con el hardware)
+
+     Todo este proceso, de principio a fin, en inglés se le conoce como
+"booting".
+
+COMANDO
+- dmesg [options]: sirve para imprimir la lista de todos los mensajes del
+kernel desde el arranque hasta el momento en el que se apague el sistema.
++ -c: imprime y borra el búfer del kernel (el búfer es almacenamiento temporal
+que en este caso lo usa el kernel). 
++ -H: imprime los mensajes completamente cambiados para que sean más fáciles
+de entender.
++ -l [list]: filtra mensajes segun el o los niveles que se especifiquen,
+separados por comas, como por ejemplo "err" para los errores, "warn", para las
+advertencias, o "info" para mensajes de operaciones normales del sistema.
++ -T: cambia el formato de la primera columna donde se muestra la cantidad de
+segundos que pasaron después del arranque en el cual se dio el mensaje, por 
+la fecha y hora en la que pasó.
+
+
+

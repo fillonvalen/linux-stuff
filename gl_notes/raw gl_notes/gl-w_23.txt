@@ -1,0 +1,135 @@
+23. SYSTEMD
+    Como se explicó en el ante último bloque, este programa (reemplazo de
+otro más viejo llamado SysV init) se encarga de la inicialización y
+administración de los servicios en varias distribuciones, incluyendo a las
+basadas en Debian, y es una herramienta que nos da la posibilidad de hacer
+varias cosas, cosa que podemos apreciar gracias a sus comandos.
+
+TARGETS
+     systemd cuenta con lo que se le dice "target", que es un "estado" o
+configuración del sistema operativo. Todos son archivos ubicados en
+"/usr/lib/systemd/{system,user}/" y terminan con ".target". Aquí hay
+configuraciones de bluetooth el internet, y demás, incluyendo ciertos niveles
+de ejecución (en el subdirectorio "/system"), similar a como tenía SysV init,
+que son configuraciones que al arrancar el sistema, establecen qué servicios
+se van a activar y los que no:
+* poweroff.target   	0
+* rescue.target     	1 (también conocido como single-user)
+* multi-user.target 	3
+* graphical.target  	5
+* reboot.target     	6
+
+0    1    3    5    6
+|    |    |    |    +> reinicio.
+|    |    |    +-----> con entorno gráfico.
+|    |    +----------> normal, pero sin entorno gráfico.
+|    +---------------> usado para mantenimiento del sistema.
++--------------------> apagado.
+     ¿Por qué hay un número después de cada target? Porque en el directorio
+mencionado con anterioridad también nos vamos a encontrar con archivos de
+nombre "runlevel" seguido de un número del 0 al 6 y ".target", siendo meros
+enlaces a los targets verdaderos, todo por una cuestión de tradición, ya que
+a los niveles de ejecución en SysV init se escribían de esa manera.
+     No solo por eso, en realidad, sino que también podemos ver qué servicios
+se activan y desactivan en cada runlevel echándole un vistazo a los
+directorios que podríamos listarlos usando
+
+$ ls -l /etc/rc*.d
+     Nos vamos a enterar que los archivos en estos directorios son enlaces
+simbólicos a los servicios originales que se encuentran en "/etc/init.d". Lo
+intersante en que cada enlace empieza o con "K", o con "S", y podemos deducir
+qué significa cada letra al ver que en "/etc/rc0.d" todos los enlaces
+comienzan con "K".
+
+RESCUE.TARGET
+     En los diferentes directorios que comienzan con "rc", hay uno llamado
+"rcS", y esa "S" es de "single-user", sí, lo mismo que el runlevel 1, y sí,
+básicamente son lo mismo, capaz S arranca un poco más de servicios pero
+siempre en una cantidad mínima para evitar posibles problemas y, como dice
+el nombre, dejando solamente que un usuario (root) acceda al sistema.
+
+     No menciono los niveles 2 y 4 porque nadie los usa, básicamente.
+
+UNITS
+     (o Unidades) Es la manera que tiene systemd de referirse a todo lo que
+puede manejar, así sean targets, servicios, puntos de montaje, dispositivos,
+y demás cosas.
+     Estos se encuentran en formas de archivos en una carpeta anteriormente
+mencionada: "/usr/lib/systemd/system/". Vamos a ver archivos con las siguientes
+terminaciones:
+* .automount: permiten que un sistema de archivos se monte automáticamente al
+acceder al mismo y lo desmonta una vez pasado un período de tiempo de
+inactividad.
+* .d: esto es un directorio con configuración adicional sobre el tipo de unit
+especificado antes del punto.
+* .mount: definen la configuración del montaje de cierto filesystem.
+* .path: maneja ciertos directorios ante determinados cambios. Por ejemplo, con
+este tipo de unit podríamos hacer que ante el cambio del contenido de un
+directorio, nos llegue un mensaje al mail al respecto.
+* .service: no hace falta explicarlo, supongo.
+* .slice: estas configuraciones son para ordenar cierto grupo de servicios
+jerárquicamente para saber a cuál darle más recursos, permitiendo establecer
+el límite que pueden usar.
+* .socket: contiene configuraciones sobre diversos "sockets", que vendrían a
+ser software que funcionan como punto de comunicación entre dos dispositivos
+conectados a internet, permitiendo el cambio de datos. También maneja IPCs
+y sistemas de archivo FIFO. Indago más al respecto en "O_IPC.txt".
+* .target: ya lo escribí...
+* .timer: los "timers" se encargan de ejecutar tareas en momentos o intervalos
+determinados.
+* .wants: son directorios que contienen enlaces simbólicos hacia dependencias
+del servicio escrito antes del punto.
+
+COMANDOS
+- systemctl [option] command [unit]:
+     Si lo escribimos a secas, va a listar todos los units, mostrando sus
+nombres y el estado en el que se encuentran. Podemos filtrar esta lista,
+con la opción "--state=" por ejemplo, seguido de uno de varios estados en
+los que un unit puede estar, como "active", o "inactive", o "mounted", etc...
++ start [service]: arranca un servicio.
++ stop [service]: para el servicio, ejecutándose nuevamente en el próximo
+arranque del sistema.
++ status [service]: muestra información del servicio, como si está encendido
+o habilitado.
++ restart [service]: reinicia el servicio.
++ reload [service]: reinicia la configuración del servicio, no el servicio
+en sí.
++ disable [service]: deshabilita el servicio, que, a diferencia de stop, va a
+dejar de iniciarse por más que se reinicie el sistema.
++ enable [service]: habilita un servicio.
++ get-default: imprime el target determinado.
++ set-default [target]: cambia el target determinado al especificado. Tiene
+efecto a partir del próximo encendido.
++ list-jobs: un "job" (trabajo) en Linux es un proceso o un grupo de procesos
+que se crea cuando ejecutamos un comando en la terminal, puede estar tanto en
+primer plano (foreground) (no podemos hacer nada hasta que el trabajo termine)
+o en segundo plano (background).
+- journalctl [options] [matches]: nos permite manejar registros del sistema
+hechos por un servicio llamado "systemd-journald.service". Hay que aclarar que
+los registros no comienzan cuando se prende el sistema, sino cuando lo
+instalamos.
++ -u [unit]: muestra los mensajes relacionados con el unit especificado o que
+coincidan con el patrón dado.
++ -p [log level]: muestra los mensajes que sean del nivel aclarado. Puede ser
+un valor numérico o su equivalente textual, siendo algunos:
+0 --> emerg    1 --> alert    2 --> crit
+3 --> err      4 --> warning  5 --> notice
+6 --> info     7 --> debug
++ -o [output]: se pueden elegir una de varias opciones que muestran el registro
+de una manera u otra, como "verbose" que muestra todo detalladamente.
++ -n [N]: muestra solo los últimos N registros. Si se agrega un "+" antes del
+número, es como aplicar "-r".
++ -r: muestra los registros del más nuevo al más viejo.
++ --list-boots: muestra solamente los encendidos y apagados de la máquina.
+- hostnamectl [options]: a secas, muestra información del sistema, como el
+nombre de la máquina, el sistema operativo, el kernel, y demás.
++ hostname [name]: sin ninguna opción, imprime el nombre de la
+máquina, pero si especificamos un nombre, lo cambia.
+- systemd-cgls [options]: ¿se acuerdan de los "slice"? Bueno, con este
+comando podemos ver todo el árbol de jerarquía.
+- init [runlevel]: entra directamente en el runlevel especificado (NO lo
+establece como predeterminado).
+
+PARÁMETRO DE ARRANQUE
+* systemd.unit=target: con GRUB podemos especificar el target antes de que
+arranque el sistema operativo

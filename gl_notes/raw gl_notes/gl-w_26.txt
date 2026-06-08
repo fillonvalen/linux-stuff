@@ -1,0 +1,273 @@
+26. HORA Y FECHA DE SOFTWARE Y HARDWARE
+     Para poder configurar la fecha y hora del sistema, vamos primero a ver
+cierta información:
+     Una máquina va a tener un reloj tanto en el hardware (o RTC,
+"Real-Time-Clocken el software ¿Para qué un reloj en el hardware?
+Para que cuando el sistema se apague, cuando se vuelva a encender
+tenga la hora correcta.
+     Evidentemente existen diferentes zonas horarias, pero todas parten de una
+una universal cuyas siglas son UTC (Coordinated Universal Time). Vamos a ver
+que cada zona horaria está acompañada de un "+" o un "-" seguido de un número,
+indicando que la hora local es UTC ± n, pudiendo ser "n" tanto solo horas,
+como horas y minutos, que son los pocos casos.
+     UTC, al ser algo global, es lo suficientemente importante como para que
+internet, los viajes de avión y barco, la astronomía, y negocios
+internacionales funcionen bien gracias a este estándar.
+     Si queremos ver todas las zonas horarias disponibles, hay que echarle un
+vistazo al directorio "/usr/share/zoneinfo".
+
+26.1. COMANDOS
+- date [options]: a secas, muestra la fecha y la hora del sistema. También 
+podemos añadir unas comillas dobles seguidas de ciertas letras acmpañadas de
+un "%", ayudándonos a formatear la salida. De varios, estas son algunas de las
+Opciones que se puede agregar (seguidas de %):
+* a: día de la semana abreviado.
+* A: día de la semana completo.
+* b: nombre del mes abreviado.
+* B: nombre del mes completo.
+* d: día del mes.
+* D: fecha (o sea %m/%d/%Y)
+* g: últimos dos dígitos del año.
+* H: hora (formato de 24h).
+* I: hora (formato de 12h).
+* m: mes.
+* M: minuto.
+* p: muestra si la hora es AM o PM.
+* S: segundos.
+* T: la hora (es decir, %H:%M:%S)
+* Y: año.
+
+     Siempre, seguido de la comilla doble que abre, hay que añadir un "+",
+porque yo lo digo. Entonces, si por ejemplo quisieramos que la salida se
+vea así:
+ 15:07 | 07-may-26
+     habría que escribir:
+$ date "+%H:%M | %d-%b-%g"
+
++ -s "date": nos permite cambiar la fecha o la hora del sistema, pudiendo
+usar diversos formatos, como por ejemplo "año-mes-día hh:mm:ss", o 
+"día nombre_del_mes año hh:mm", u otras formas válidas de escribir fecha y
+hora.
+- hwclock [options]: sin ninguna opción, muestra la hora y la fecha del reloj
+del hardware.
++ --systohc: sincronizaa la hora del reloj del hardware con el del sistema.
++ --hctosys: lo mismo que --psystohc pero al revés.
++ --set --date "date": estas dos opciones permiten cambiar la hora o fecha del
+RTC, y respecto al formato, pasa lo mismo que con "date -s".
+- timedatectl [options] [instruction]: (herramienta de systemd) el comando, a
+secas, va a mostrar información sobre la fecha y hora local, universal, el
+nombre de la zona horaria, si el reloj del sistema está sincronizado con el
+del hardware, si el servicio NTP está activo, y si el RTC está configurado
+para que muestre la zona horario local o la hora según el UTC.
+
+26.2. SERVICIO NTP
+NOTA
+     En esta sección hay más de un concepto relacionado con el networking
+que serán salteados o poco profundizados porque por ahora no nos interesan.
+Sin embargo, si a uno le pica la curiosidad, puede revisar los bloques con el
+mismo nombre del tema.
+
+     (Network Time Protocol) Esta herramienta nos permite sincronizar el reloj
+de una computadora a través de una red, esencial para la comuniación y 
+coordinación entre dispositivos.
+
+26.2.1 NTPSEC
+     "ntpsec" es un programa que implementa el servicio NTP a través del
+demonio "ntpd", aparte de otros comandos como "ntpq".
+     Si tenemos el administrador de paquetes "apt", el nombre del programa a
+instalar es "ntp-ntpsec",
+     A la hora de querer configurar la sincronización del reloj de un servidor
+con otros relojes, es cuando entra el archivo "/etc/ntpsec/ntp.conf"
+(o "/etc/ntp.conf"). 
+     En el archivo vamos a encontrar varias líneas que comienzan con "pool",
+seguido de lo que pareciera ser una página. Un "pool" es una colección de
+varios relojes de referencia que trabajan juntos y así otorgar una referencia
+de tiempo lo más acertada posible, mientras que el comando "server" apunta
+solamente a un reloj de referencia. Hay más de un pool debido a que, si falla
+uno, hay otras alternativas y la máquina no pierde sincronización.
+     Entre otras varias cosas, para sincronizar la hora con un servidor,
+a modo de ejemplo, se puede añadir algo así:
+
+server 192.168.1.34 iburst 
+stratum 10
+
+     Se agrega la opción "iburst" para decirle que la primera sincronización
+de todas utilice más recursos que las demás, asegurando rapidez.
+     El comando "stratum" determina el nivel jerárquico del reloj.
+     Si solamente queremos que se conecte a un solo reloj habiendo sacado los
+pools predeterminados, hay que usar el comando "tos", seguido de "mincclock",
+que establece el número mínimo de relojes disponibles como para que se realize
+la  sincronización, porque de manera predeterminada el valor es 3, ya
+que el mínimo recomendado es ese.
+
+tos minclock 1
+
+     Otra opción que se puede añadir al comando "tos" es "minsane", cuyo
+valor predeterminado es 1, y establece la cantidad mínima de servidores
+candidatos a los cuales se pueda sincronizar. Aunque el valor sea 1, el
+recomendado es 4, pero eso queda ya en cada uno.
+     En la misma línea en el que esté el comando "server" podemos especificar
+tanto la frecuencia mínima como máxima de los segundos cada los que se va a
+actualizar la sincronización. El número de segundos verdadero es 2 elevado al
+número que se aclare. El valor predeterminado de ambos es 6 (2^6=64), y se
+pueden tener un valor en el rango del 0 al 17 (2^17=131072=36,4 horas).
+     Un ejemplo sería:
+
+server 192.168.1.3 iburst minpoll 3 maxpoll 6
+
+     Luego, en el mismo archivo, pero del servidor B:
+
+allow 192.0.0.0/2
+stratum 8
+		
+     El comando "allow" va seguido de una "subnet", una dirección IP, o el
+nombre de una máquina. En internet hay páginas que permiten calcular tu
+subnet.
+     De vuelta aparece "stratum", pero con un número menor al anterior por la
+cuestión de jerarquía de la "strata" de los servidores NTP.
+     Hay que tener en cuenta que lo normal es que no se conecte enseguida al
+servidor, ya que ntpsec no es tan rápido como chrony.
+     Para comprobar que todo funcione viento en popa, primero hay que reiniciar
+el servicio de ntpsec (o ntpd) y podemos ayudarnos del comando:
+$ ntpq -p
+
+     el cual muestra una lista de los servidores o pools establecidos en el
+archivo de configuración, y se ve algo así:
+
+ remote           refid      st t when poll reach   delay   offset  jitter
+==========================================================================
+*192.168.1.3  192.168.1.241  3  u  34   64    0     12.01   -0.42   3.127
+
+     Al principio, antes de "remote" pueden haber uno de estos caracteres:
+" " el "host" fue descartado debido a por ejemplo que su nivel de stratum es
+muy alto, o no se puede conectar al servidor, etc.
+"-" descartado por cierto algoritmo llamado "Cluster algorithm".
+"." también indica descarte.
+"x" descartado por un algoritmo llamado "Intersection algorithm".
+"+" posible candidato.
+"*" fuente de sincronización actualmente usada.
+"#" es un candidato posible pero solo en caso de ser muy necesario ya que
+supera el límite máxima de distancia predefinido.
+"o" significa que es una fuente de sincronización que está siendo usada y
+utiliza un tipo de señal llamada PPS (Pulse Per-Second), resultando en mayor
+precisión.
+
+* refid: es el nombre o dirección IP del reloj que utiliza la fuente de
+sincronización a la que se esté conectada.
+* st: nivel de stratum de la fuente.
+* t: tipo de asociación con el servidor, pudiendo haber los siguientes valores:
+
+"b" quiere decir "broadcast". 
+"l" viene de "local", queriendo decir que la fuente está sincronizada con
+un reloj de referencia local (o sea un reloj de stratum 0).
+"m" significa "multicast".
+"p" aparece si la fuente es un "pool" (o pileta, o tanque).
+"u" es de "unicast".
+NTP de cliente-servidor con una dirreción IP o un "hostname".
+"-" suele aparecer si un servidor es inaccesible.
+
+* when: segundos pasados desde la última respuesta de la fuente.
+* poll: valor definido con "minpoll".
+* reach: muestra un código octal que muestra el éxito o falla de las
+últimas ocho señales enviadas a la fuente, según como se vea el número en
+binario. Por ejemplo, 377 en binario es 11111111, y quiere decir que todas
+esas ocho señales recibieron una respuesta exitosamente. Mientras que puede
+haber un valor como 376, que en binario es 11111110, significando que todas
+las señales recibieron respuesta menos la última, y así con los números
+octales entre 0 (ninguna respuesta) y 377.
+* delay: muestra los milisegundos entre el envío del paquete y la respuesta
+enviada por la fuente.
+* offset: se encuentra la diferencia entre el reloj de la fuente y el del
+cliente.
+* jitter: (inestabilidad) En una red ideal, los paquetes llegan cada cierto
+intervalo definido, pero lo normal es que algunos lleguen antes y otros
+después. Esa variación es llamada "jitter". Un valor bajo sería entre 0.1 y 2
+milisegundos, pero si supera los 20, lo más probable es que la fuente sea
+descartada por NTP.
+
+26.2.2. CHRONY
+     Chrony es otra implementación más eficiente de NTP que, a diferencia
+de ntpsec (que se centra en la simplicidad y en la seguridad), este es más
+rápido y preparado para poder sincronizar en condiciones duras, como
+conexiones de red intermitentes, o mucho tráfico en la red, etcétera, y aún
+así consumir menos recursos.
+     La sintáxis en su archivo de configuración ("/etc/chrony.conf" o
+"/etc/chrony/chrony.conf") es la misma que con "ntp.conf" con la diferencia
+de que hay más opciones a nuestro alcance, como por ejemplo el comando
+"makestep" seguido de dos números (N y M). Este comando ajusta el reloj si
+la diferencia con el reloj usado de referencia excede el límite establecido en
+N, siempre y cuando el reloj se haya actualizado M veces. Otro comando es 
+"rtcsync" que sincroniza el reloj del sistema con el reloj del hardware cada 11
+minutos par así evitar que el ajuste que realize chrony del reloj sea abrupto y
+todo funcione con normalidad. 
+     Respecto a los comandos, el más importante es "chronyc", al cual le
+podemos dar una de varias instrucciones, como "sources" para que nos muestre
+una lista de los servidores y pools establecidos en el archivo de
+configuración, muy similar a "ntpq -p":
+
+MS Name/IP address         Stratum Poll Reach LastRx Last sample
+===============================================================================
+
+"M" es el tipo de fuente, que puede ser:
+ "^" se refiere a un servidor.
+ "=" significa que es un "peer", que es una relación donde ambos lados
+pueden sincronizarse entre sí.
+ "#" es para cuando la fuente es un reloj local de hardware (stratum 1).
+"S" se refiere al estado del servidor, pudiendo tener estas opciones:
+ "*" el mejor candidato y el seleccionado.
+ "+" quiere decir que es aceptable y que está siendo usado en combinación con
+la fuente seleccionada (*) para mejorar la precisión.
+ "-" candidato aceptable pero no incluido en la combinación.
+ "?" no es un candidato ya sea por alguna que otra razón como un
+stratum alto o que la fuente es inaccesible, entre otras.
+ "x" NTP lo llama "falseticker" al diferir mucho el reloj con el de los demás
+candidatos, excluyéndolo de la lista de candidatos.   
+ "~" esto aparece cuando el jitter (inestabilidad) es muy alto, por ende está
+excluido.
+
+"Name/IP address" nombre o dirección IP de la fuente.
+"Stratum" el nivel de stratum del servidor.
+"Poll" lo mismo que con "ntpq -p".
+"Reach" lo mismo...
+"LastRx" es básicamente lo mismo que la columna "when" en "ntpq -p".
+"Last sample" se ve algo así:
+
++|- n1 unidad [+|- n2 unidad] +/- n3 unidad
+
+     donde "unidad" puede ser "s" (segundos), "ms" (milisegundos), "us"
+(microsegundos), o "ns" (nanosegundos).
+     n1 va a tener o un "+" o un "-" delante, queriendo decir que a
+diferencia de la fuente, tu reloj está adelantado o atrasado n1 unidad
+teniendo en cuenta el último poll. Lo mismo que la columna "offset" en
+"ntpq -p".
+     n2 también va a ser negativo o positivo, y es el "offset" (diferencia
+entre tu reloj y el del servidor) pero ajustado, o corregido.
+     n3 va a tener delante literalmente "+/-", y trata de una "incertidumbre",
+diciendo: tenés cierto atraso o adelanto (n1 y n2) pero el valor verdadero de
+ese atraso o adelanto puede ser en un rango entre número - n3, y número + n3.
+El cálculo es realizado con cierta fórmula matemática llamada raíz cuadrada
+media, pero no voy a entrar más en detalles porque si no me voy por las ramas.
+
+     Otra posible instrucción útil es "tracking".
+
+26.2.3 TIMESYNCD
+     Este es un servicio que viene de manera predeterminada en sistemas con
+systemd, permitiendo una sincronización rápida y minimalista. Vamos a poder
+apreciar que si instalamos uno de los servicios anteriores con apt, este 
+automáticamente va a eliminar timesyncd, por eso, si quisieramos instalarlo
+nuevamente, el nombre del paquete sería "systemd-timesyncd".
+     El archivo de configuración se encuentra en "/etc/systemd/timesyncd.conf",
+y nos vamos a encontrar con todas las opciones posibles, pero con un "#" al
+principio de la línea, significando que están comentadas.
+     La función de cada línea es perfectamente deducible gracias a los
+conceptos vistos anteriormente, como PollIntervalMinsec por ejemplo, o
+FallBackNTP, pero hay dos excepciones:
+* ConnectionRetrySec: aquí se escribe el mínimo "delay" que debe haber antes
+de intentar conectarse a un nuevo servidor NTP.
+* SaveIntervalSec: es el intérvalo en el cual el tiempo va a ser guardado en
+el disco, resultando útil para sistemas "offline" sin un RTC local,
+garantizando también que el reloj del sistema se mantenga monótono a pesar
+de los apagados y encendidos.
+     Cabe aclarar que la unidad predeterminada de las opciones numéricas son
+los segundos, pero se pueden usar otras, como "min", o "m" para los minutos,
+"h" para las horas, "d" o "days" para los días, y así...

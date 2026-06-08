@@ -1,0 +1,150 @@
+16. GRUPOS Y USUARIOS
+     Estos son controlados a través de diferentes archivos y comandos:
+NOTA
+     Las líneas de los archivos van a estar separadas por diferentes campos delimitados con dos puntos
+":"
+
+* /etc/passwd: aquí se encuentra una lista de los usuarios del sistema con información dividida en 
+siete campos:
+username:password:UserID:GroupID:user_info:homedir:shell
+    |        |      |       |        |        |      +> shell usada.
+    |        |      |       |        |        +-------> directorio personal.
+    |        |      |       |        +----------------> información adicional.
+    |        |      |       +-------------------------> ID del grupo del usuario (GID).
+    |        |      +---------------------------------> ID del usuario (UID).
+    |        +----------------------------------------> o hay una 'x' o está vacío (sin contraseña).
+    +-------------------------------------------------> nombre de usuario.
+    
+* /etc/shadow: contiene las contraseñas cifradas (las que están como "x" en /etc/passwd) junto a la
+información de la expiración de estas. Cada línea está dividida en nueve campos:
+1 -> Nombre de usuario.
+2 -> Contraseña encriptada. También, dependiendo del sistema operativo, puede o haber un "*" o un "!",
+queriendo decir que el usuario no puede iniciar sesión con una contraseña. O si no "!!", significando
+que el usuario no tiene contraseña.
+3 -> El día del último cambio de la contraseña, expresado en el número de días transcurridos desde el
+1/1/1970 (Época Unix).
+4 -> El mínimo de días que deben de pasar para que el usuario pueda cambiar su contraseña.
+5 -> El máximo de días que dura la contraseña, teniendo el usuario que cambiarla.
+6 -> Cantidad de días anteriores a la expiración de la contraseña en el que se le va a avisar al
+usuario
+que debe cambiarla cada vez que inicie sesión.
+7 -> Número de días en el que la cuenta se va a deshabilitar después de que haya vencido la
+contraseña.
+8 -> El día en el que la cuenta va a deshabilitarse (Época Unix). Si no hay nada quiere decir que no
+vence nunca.
+9 -> Como el apéndice, está pero no sirve para nada.
+
+* /etc/login.defs: en este archivo encontramos valores predeterminados usados en los vencimientos de
+las contraseñas y también a la hora de manipular usuarios y grupos. Lo mejor es ver el archivo por
+su cuenta.
+
+* /etc/group: acá están las relaciones entre grupos y usuarios, cada línea conteniendo 4 campos:
+group_name:password:GID:members
+    |         |      |     +> miembros del grupo, separados por coma (campo opcional).
+    |         |      +------> ID del grupo.
+    |         +-------------> contraseña del grupo (por lo general no tienen, asi que hay una "x").
+    +-----------------------> nombre del grupo.
+
+* /etc/gshadow: contiene las contraseñas de los grupos, y también hay cuatro campos por línea:
+group_name:password:group_admin:members
+     |        |          |         +> lo mismo que antes.
+     |        |          +----------> administrador del grupo.
+     |        +---------------------> contraseña encriptada del grupo ("!" si no existe).
+     +------------------------------> ¿Qué más podría ser?
+
+     Para entender bien este último, hay que aclarar algo: en un sistema de Linux, cada usuario del
+sistema tiene que pertenecer al menos a un grupo. Existen dos tipos: primarios, que es el grupo
+privado del usuario (se crea automáticamente cuando el usuario es añadido al sistema) y los
+secundarios, que son públicos, y cuentan con determinado administrador. Si un grupo secundario tiene
+contraseña, cualquiera que la conozca puede unirse, pero en caso contrario solo el administrador
+puede añadir usuarios a su grupo.
+     Los re culeados usan en un archivo "x" y en el otro "!" para indicar que no hay contraseña. Yo
+que no sé un choto (por ahora) de sistemas operativos, haría un mejor trabajo.
+     
+COMANDOS
+NOTA
+     Tener en cuenta que los comandos que manipulan usuarios y grupos deben ser usados con privilegios
+de super-usuario.
+     Los comandos como "useradd", usan una lista de valores predeterminados ubicados en /etc/(comando)
+
+- users: muestra una lista de los usuarios que iniciaron sesión.
+- id [user]: muestra tanto el UID como los GIDs de los grupos al que pertenece el usuario especificado 
+(el comando a secas muestra esa información del usuario actual).
+- useradd [options] [user]: supongo que no es necesario explicar su función...
++ -b:
++ -d [work_dir]: el valor predeterminado es usar el directorio base ("/home") y dentro crear otro
+con el nombre de usuario, siendo ese el espacio de trabajo. Pero si se quiere, se puede establecer una
+ruta completamente diferente, e incluso puede ser un directorio que todavía no exista.
++ -e [date]: se expresa en formato YYYY-MM-DD el día de expiración de la cuenta.
++ -f [days]: cantidad de días después de que la contraseña expire en los que se va a deshabilitar la
+cuenta. Si se pone 0, la cuenta se deshabilitará apenas venza la contraseña. 
++ -g [group_name/GID]: el número o nombre del grupo principal al que va a pertenecer, siempre y cuando
+exista.
++ -G [groups]: añadir al usuario a la lista de grupos (separados por coma ",") escritos. 
++ -m: crea el directorio personal del usuario. 
++ -o: permite la creación de un UID que ya exista (válida solo con "-u").
++ -s [shell]: la shell que usará el usuario. 
++ -u [UID]: permite especificar un valor numérico para el UID. Debe ser un valor único, a no ser que se
+use con "-o". 
+- adduser [user]: parecido a "useradd", pero evita el quilombo de las opciones.
+- usermod [options] [user]: modifica información de la cuenta de algún usuario.
+
+ Para modificar muchos de los valores mencionados en el comando "useradd" basta con usar la misma
+opción.
+
++ -a: sirve para añadir al usuario a uno o más grupos (usar sí o sí con "-G", seguida de la lista).
++ -d: cambia el directorio de trabajo (solo se puede usar junto a "-m".
++ -l [new_name]: cambia el nombre con el que se registra el usuario.
++ -m: mueve todo el contenido del viejo directorio personal al nuevo especificado con "-d".
+- userdel [user]: elimina al usuario del sistema.
++ -f: permite usar "-r" incluso si el usuario inició sesión.
++ -r: borra todo el contenido del directorio del trabajo, incluyéndolo también.
+- passwd [options] [user]: cambia la contraseña del usuario o información del vencimiento. Si no se
+especifica ninguno, modifica la contraseña del usuario actual.
+     Si la contraseña no es lo suficientemente compleja, el comando la va a rechazar, por eso mi
+recomendación es cumplir con estos requisitos:
+* Mínimo 8 cáracteres (En realidad 12 pero bueno).
+* mayúscula/s.
+* minúscula/s
+* dígito/s
+* cualquier otro cáracter NO alfanumérico (el espacio es clave). 
+
++ -a: (all) es para usar junto a "-S" y quiere decir "para todos los usuarios".  
++ -d: elimina la contraseña (la deja vacía).
++ -e: expira la contraseña en el momento.
++ -i [days]: establece el número de días que deben pasar luego del vencimiento de la contraseña para 
+que la cuenta sea deshabilitada.
++ -n [days]: modifica los días que deben pasar entre una modificación de contraseña y otra.
++ -S: muestra información de la contraseña.
++ -w [days]: modifica la cantidad de días anteriores a la expiración de la contraseña en el que se le
+va a advertir al usuario.
++ -x [days]: cambia el máximo número de días en los que la contraseña es válida.
+- chage [options] [user]: permite cambiar la información de vencimiento de contraseña de cierto usuario.
++ -d [days]: establece la cantidad de días desde la Época Unix ( o YYYY-MM-DD) en el que la contraseña se
+cambió la contraseña.  
++ -E [date]: en formato YYYY-MM-DD o en los días pasados desde la Época Unix, establece el día en el que la
+cuenta va a dejar de ser accesible.
++ -I [days]: lo mismo que "passwd -i".
++ -l: lista información detallada del vencimiento de la contraseña.
++ -m [days]: lo mismo que "passwd -n".
++ -M [days]: lo mismo que "passwd -x":
++ -W [days]: similar a "passwd -w".
+- groups [user]: muestra los grupos de los que el usuario es miembro. 
+- groupadd [options] [name]: crea un grupo, dah.
+- groupmod [options] [group]: modifica información de determinado grupo.
++ -g [GID]: cambia el GID, y puede ser un valor repetido si se usa "-o".
++ -n [name]: cambia el nombre del grupo.
+- groupdel [group]: mmm, me pregunto... ¿Para qué servirá?
+- grpck [options]: verifica los archivos /etc/shadow y /etc/gshadow en busca de errores de formato o
+información invalida. En caso positivo, el usuario es consultado si desea borrar la línea encontrada.
+- gpasswd [options] [group]: administra /etc/group y /etc/gshadow. Solo se puede modificar determinado
+grupo si es super-usuario o administrador del mismo.
+     Las únicas opciones combinables son "-A" y "-M".
++ -a [user]: añade un usuario al grupo.
++ -d [user]: elimina al usuario del grupo.
++ -r: elimina la contraseña del grupo.
++ -A [user,...]: establece una lista de los usuarios administradores del grupo.
++ -M [user,...]: establece una lista de los miembros.
+- chown [options] owner:group [file/dir]: cambia el dueño y el grupo al que le pertenece cierto
+archivo o directorio.
++ -R: modo recursivo, para usar si queremos cambiar la pertenencia del contenido de un directorio.
