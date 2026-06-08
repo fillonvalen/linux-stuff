@@ -1,0 +1,55 @@
+18. HARDWARE Y SOFTWARE
+     En este bloque vamos a ver los componentes tanto físicos como lógicos
+de un sistema operativo, ¿Por qué? Porque mucho contenido del que se va a
+ver tanto en este capítulo como en otros, se va a entender mejor si sabemos
+al menos lo básico.
+
+HARDWARE
+     Cada componente físico se interrelaciona con el resto para ejecutar
+tareas y procesar información. 
+     Hay muchos, pero vamos a ver los siguientes...
+* Memoria: es donde se almacenan tanto los datos como las instrucciones que un
+procesador tiene que llevar a cabo.
+     Existen diferentes tipos de memorias:
+	> ROM: (Read-Only Memory): no puede ser modificadas por nadie ya que guarda
+instrucciones y configuraciones relacionadas con el sistema que nunca deberían
+perderse. 
+	> RAM: (Random Access Memory): guarda temporalmente información que una
+aplicación o el sistema operativo va a usar en un futuro, y así los
+procesadores tienen un acceso más rápido a esas instrucciones. A diferencia
+de la ROM, lo que sea que se haya guardado se borra apenas se cierre la
+aplicación o se apague el sistema.
+	> Memoria de almacenamiento a largo plazo: o sea los discos duros, por
+ejemplo, que guardan datos incluso estando el sistema apagado.
+* CPU: revisar bloque 3.
+* Placa madre: permite la comunicación entre los diferentes componentes del
+hardware. 
+* Chipset: controla y regula la comunicación que tiene el demás hardware
+entre sí.
+
+ (A mí me gusta verlo así: los autos (hardware) necesitan ir a diferentes
+lugares, pero para eso necesitan calles (placa madre), pero sin control sería
+todo un caos, así que están los semáforos (chipset))
+
+SOFTWARE
+     Permite al usuario interactuar con el sistema, incluyendo el hardware.
+     Sí, hoy en día hay mucho software, pero vamos a ver lo esencial.
+* Servicio: es un proceso o programa que se ejecuta ya sea en segundo plano
+o no. En otras palabras, es como un registro del sistema de que algo está
+en ejecución.
+* Kernel: revisar bloque 1.
+* Sistema de archivos: revisar bloque 5.
+* Comandos: bueno, no creo que haga falta explicar...
+* Librerías: revisar bloque 11.
+* Gestor de arranque: (bootloader) viene a ser firmware que permite seleccionar
+qué sistema operativo iniciar.
+
+FIRMWARE
+     Esto es código máquina (software) que reside en la ROM, y a diferencia de
+las aplicaciones, se comunica directamente con el hardware, encargándose de la
+correcta inicialización de éste último al arrancar el sistema.
+
+BIBLIOGRAFÍA
+https://computer.howstuffworks.com/flash-memory.htm
+https://www.digitaltrends.com/phones/what-is-ram/
+https://linuxvox.com/blog/describe-a-linux-process/#google_vignette

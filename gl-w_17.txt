@@ -1,0 +1,130 @@
+17. PERMISOS Y ATRIBUTOS
+     Llegó el momento de entender qué significa esa primera línea que vemos en cada archivo y directorio
+al ejecutar "ls -l", o "stat", por ejemplo:
+
+ -rwxrw-r-- 
+
+     Esta línea la podemos dividir en cuatro grupos:
+
+- rwx rwx rwx
+|  |   |   +> permisos para "otros" (los que no entren en las categorías anteriores).
+|  |   +----> permisos que tiene el grupo dueño.
+|  +--------> permisos del usuario dueño.
++-----------> tipo.
+
+     los tipos pueden ser:
+"-" para archivo.     "l" para enlace simbólico.
+"d" para directorio.  "b" para dispositivo de bloque.
+
+     Existen otros más, pero por el momento no nos interesan.
+     en cada uno de los tres grupos hay un lugar para cada permiso:
+---
+||+> permiso de ejecución (x)
+|+-> permiso de escritura (w)
++--> permiso de lectura   (r)
+     
+     Si solo hay un guión medio "-", es porque está deshabilitado, dah.
+
+PERMISOS ESPECIALES
+     Pero la historia no termina acá. Si aplicamos "ls -l" en el archivo "/usr/bin/passwd", vamos a ver 
+lo siguiente:
+ -rwsr-xr-x
+   |
+   +--> ¿Qué es esta "s"?
+   
+     Es el SUID, o Set User ID, o setuid, que trata de un permiso (solo sirve para ejecutables) que
+permite a cualquier usuario del sistema ejecutar el archivo con los permisos del dueño.
+
+     Otro archivo al que podemos echarle un vistazo es a "/usr/bin/write":
+ -rwxr-sr-x
+
+     En vez de una "x" hay una "s" en la sección de los permisos de grupo. Si esto se aplica a un
+directorio, entonces todos los archivos dentro le van a pertenecer al grupo, por más que haya sido
+creado por otro usuario que no tiene nada que ver. Si se aplica a un archivo, es como el SUID, pero esta
+vez usando los permisos del grupo. A este bit se le llama SGID, o Set Group ID.
+
+     Ahora si usamos "ls -ld" en el directorio "/tmp", vamos a ver:
+ drwxrwxrwt
+
+     Esa "t" del final, es un "Sticky bit", el cual se aplica en directorios, y anula la posibilidad de
+borrar archivos dentro de estos a no ser que seas dueño del archivo.
+
+COMANDOS
+- chmod [option] [mode] [file]: cambia los permisos de un archivo, habiendo tres maneras posibles de 
+hacerlo.
+     Primero podemos usar los caracteres "u" (user), "g" (group), "o" (others), o "a" (all) (también se
+puede dejar en blanco, siendo lo mismo que all), seguido de "+", "-", y luego UN permiso que se quiera añadir o quitar. Otra opción es usar "=", y a continuación uno o más permisos, igualándolos únicamente a
+los especificados (si pusiera, por ejemplo, "a=r", quedaría "r--r--r--").
+     La otra manera es numérica, en la que hay que especificar tres números, cada uno por grupo. La idea
+es sumar en cada campo los valores definidos para cada permiso:
+* 4 -> lectura 
+* 2 -> escritura.
+* 1 -> ejecución.
+* 0 -> ninguno.
+
+     Así, por ejemplo si quisieramos algo como "r-xrw-r--", habría que escribir:
+$ chmod 561 file
+
+     Si queremos añadir un permiso especial, en primer lugar hay que añadir otro número:
+* 4 -> SUID.
+* 2 -> SGID.  
+* 1 -> sticky bit.
+* 0 -> ninguno.
+ 
+     O sea que los permisos de "/etc/passwd" en forma numérica se verían como "4755".
+
+     Si no podemos usar las letras. Por ejemplo para aplicar el SGID sería "g+s", y para el sticky bit
+usamos "+t".
+     Una opción útil es "-R", o sea cambia los permisos de los archivos que estén dentro de un
+directorio.
+
+- chown [option] owner:group [file]: cambia tanto el usuario como el grupo dueño de un archivo. Si se
+quiere aplicar a todo el contenido de un directorio hay que usar la opción "-R". 
+     Cabe mencionar que si solo se quiere cambiar el usuario dueño, basta con escribir su nombre y nada
+más.
+
+- umask [option] [mode]: permite establecer o ver los permisos predeterminados que van a tener los 
+directorios y los archivos que se creen. Solamente se pueden modificar usando notación numérica. El tema
+es que, a diferencia de "chmod", si queremos cambiar los valores, vamos a tener que hacer el cálculo de
+ 7 - suma_de_permisos
+
+     De esto nos damos cuenta si escribimos el comando a secas, recibiendo una salida de "0022". Siendo
+el primer dígito el permiso especial (0, ninguno), luego un 0 (7 - (4 + 2 + 1)), un 2 (7 - (4 + 1)), y
+otro 2. Al principio puede resultar confuso, sí, por eso existe la opción "-S".
+     Entonces, 0022 es lo mismo que 0755 (0, 7-7, 7-5, 7-5).
+     A la hora de asignar permisos especiales es lo mismo que con chmod.
+     Hay que tener en cuenta que el límite numérico para los archivos es de 666, porque por cuestiones
+de seguridad, no se puede agregar el permiso de ejecución de manera predeterminada en los archivos, solo
+en los directorios, teniendo estos el límite de 777.
+
+ATRIBUTOS
+     En los sistemas de archivo ext (2, 3 y 4) los archivos y directorios pueden tener atributos, que
+pueden ser los siguientes:
+* a: sirve para que los archivos con permiso de escritura para "otros", no puedan eliminar ni
+sobreescribir información, solo añadirla.
+* A: lo que hace es volver la última fecha de modificación (atime) inmodificable de cierto archivo por
+más que este haya sido modificado.
+* D: aplicable en directorios, estableciendo que los datos dentro se escriban en el disco duro en el
+instante (que el 
+* e: quiere decir que el archivo usa un elemento llamado "extent", que es básicamente la forma en la que
+ext4 "ordena" los archivos, y permite saber eficientemente los bloques ocupados por tales. Este atributo
+siempre está y no se puede remover con el comando.
+* i: vuelve un archivo inmutable incluso para el mismo super-usuario.
+* j: establece que el archivo primero pase por el proceso de "journaling" (ext es un "journaling file
+system", significando que cuando las modificaciones quedan guardadas en un "registro" (journal=diario),
+permitiendo la recuperación de datos. No tiene mucho efecto si el sistema de archivos tiene la opción
+predeterminada de "data=journal".
+* s: si un archivo con este atributo se borra, los bloques que ocupaba van a ser llenados con ceros,
+siendo una eliminación absoluta y completamente irrecuperable.
+* S: similar al atributo "d", pero se aplica a archivos en vez de a directorios.
+* u: básicamente manda el archivo a una "papelera de reciclaje", permitiendo su recuperación.
+
+     Hay muchas más opciones, pero el problema es que algunas están llenas de peros, y no me parecen muy
+relevantes, por lo menos a mí, así que recomiendo fijarse en el manual de "chattr".
+
+COMANDOS
+- chattr [option] [attribute] [file/dir]: este se usa para cambiar los atributos de un archivo o
+directorio. Como en "chmod", se usa "+" para asignar, "-" para remover, y "=" para establecer nada más qu
+los atributos especificados.
++ -R: sirve para cambiar los atributos del contenido de un directorio (modo recursivo).
+- lsattr [option] [file/dir]: lista los atributos de un archivo o directorio.

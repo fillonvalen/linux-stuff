@@ -1,0 +1,40 @@
+01 --> Linux origins
+02 --> Best distro
+03 --> D13 install (VBox)
+04 --> LM zena install  (Vbox)
+05 --> Partitions
+06 --> System directories detailed
+07 --> CLI, shell, terminal and console
+08 --> Various commands
+09 --> Compressing and archiving
+10 --> Hard/Soft links
+11 --> Libraries
+12 --> Package managers (apt)
+13 --> Vim
+14 --> Pipe
+15 --> Bash
+16 --> Users and groups
+17 --> Permissions and attributes
+[HERE STARTS PART TWO]
+18 --> About hardware and software
+19 --> System startup 
+20 --> GRUB
+21 --> Processes
+22 --> Cron process
+23 --> Systemd
+24 --> Creating units (timers and services)
+25 --> Locales
+26 --> Clock
+27 --> Code compilation
+28 --> Storage
+29 --> Mounting 
+30 --> Ramdisk
+31 --> Backups
+32 --> RAID's
+33 --> Volumes management
+34 --> Hardware
+35 --> Logs
+36 --> Encryption
+37 --> docker
+38 --> Kernel and modules
+39 --> Windows

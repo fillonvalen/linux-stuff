@@ -1,0 +1,115 @@
+15. ENTRAÑANDO BASH
+
+ALIAS
+     En bash podemos crear alias, que vendrían a ser nombres para uno o varios comandos con
+     ciertos parámetros. Por ejemplo, podemos crear un alias que ejecute 
+ apt-update && apt-ugrade -y
+     Por nosotros. Para hacerlo habría que escribir lo siguiente:
+$ alias au='sudo apt-update && sudo apt-upgrade -y'     
+     "au" es solo un ejemplo, a un alias le podemos poner el nombre que queramos.
+     Lo que pasa es que cuando reiniciemos, el alias se va a perder ¿Y cómo hacemos que sea
+"permanente"? Bueno, acá es cuando entra el archivo "~/.bashrc", encargado de ejecutar ciertas
+instrucciones cuando se accede a una non-login shell. Si accedemos con cualquier editor de texto,
+vamos a encontrarnos con bastantes cosas (dependiendo de la distribución que se use), pero por
+ahora vamos a ignorarlas. Lo que vamos a hacer es ir al final de todo, y la línea anterior
+la vamos a escribir en el archivo. Después guardamos, salimos, y ponemos en la terminal:
+$ source .bashrc 
+
+     Este comando lo que va hacer es ejecutar todas las instrucciones dentro del archivo
+especificado, en este caso "~/.bashrc".
+
+INICIANDO EL AMBIENTE
+     Ahora imaginemos un caso en el que cada vez que prendamos nuestro sistema, se ejecuten
+ciertos comandos. Aquí "~/.bashrc" no es la mejor opción, porque como se explicó anteriormente,
+cada vez que abramos una nueva terminal se ejecutará todo lo que haya dentro. El candidato en
+esta situación es "~/.bash_profile" (o "~/.profile"), que sí cumple con nuestra necesidad, ejecutándose
+solo por cada nueva login-shell.
+     Pero la cosa no termina ahí, antes está presente el archivo "/etc/profile", que es el primero
+en ejecutarse, y guarda variables de entorno (environment variables), alias, y demás cosas para
+todos los usuarios del sistema una vez se registran. Aparte de eso, también se van a ejecutar los
+scripts guardados en el directorio "/etc/profile.d/".
+
+ENVIRONMENT VARIABLES
+     Son variables que poseen información técnica, ya sea del sistema, de la shell que estemos
+usando, o del usuario.
+
+COMANDOS
+- printenv [options]: muestra todas las variables de entorno presentes para la shell registrada.
+- env [options]: imprime una lista de las variables de entorno globales.
+- set [options]: lista absolutamente todas las variables, tanto locales como globales.
+- export [options] [variable]: crea o modifica una variable de entorno global.
+- unset [options] [variable]: "desactiva" la variable especificada (no todas se pueden desactivar).
+
+MODIFICANDO Y CREANDO
+     Si quisieramos crear una variable de entorno o sobreescribir su valor, habría que usar la sintaxis:
+NAME=value
+
+	 En cambio, si queremos añadir algo en la variable:
+NAME=$NAME
+
+     Y a continuación agregamos lo que queramos agregar.
+
+(al poner '$' le estamos diciendo a bash que obtenga el valor de la variable con el nombre
+especificado)
+
+VARIABLES LOCALES
+     Las variables de shell, o locales, son creadas para trabajar solamente en la sesión actual, al
+desaparecen apenas se cierre la misma, y se crean simplemente escribiendo:
+ NAME=value
+
+     Donde NAME es un nombre cualquiera y lo mismo para value.
+
+VARIABLES GLOBALES    
+     Las variables globales están para ser usadas por diferentes programas y procesos iniciados por la
+shell. Se crean escrbiendo:
+ export NAME=value
+
+HISTORIAL
+     Apenas se crea nuestro sistema operativo, en los directorios de trabajo automáticamente se crea un
+archivo llamado ".bash_istory", en el cual se irán guardando los comandos que vamos ejecutando a lo
+largo de nuestras sesiones.
+     Podríamos echarle un vistazo al archivo para ver la lista, pero mejor es usar el comando "history",
+que nos permite ver el historial con las líneas enumeradas. Si uno quisiera borrar todo el registro,
+habría que usar este comando con la opción "-c".
+     Existen diferentes variables que modifican el comportamiento del historial:
+* HISTSIZE: define la cantidad de comandos que bash va a recordar por cada sesión.
+* HISTCMD: es el índice del último comando ejecutado.
+* HISTFILE: define el archivo que va a contener el historial.
+* HISTFILESIZE: establece el máximo de líneas que va a contener el archivo especificado en HISTFILE.
+     Lo ideal es definir estas variables en "/etc/profile" o "~/bash_profile"
+
+ATAJOS DE TECLADO
+- Tab: completa o muestra una lista de posibles comandos, argumentos o archivos que empiecen por lo que
+se haya escrito.
+- Ctrl + a: dirige el cursor al principio de la línea.
+- Ctrl + b: mueve el cursor hacia la izquierda (por cáracter).
+- Ctrl + c: finaliza el proceso que se esté ejecutando.
+- Ctrl + d: elimina el cáracter debajo del cursor.
+- Ctrl + e: lleva el cursor al final de la línea.
+- Ctrl + f: mueve el cursor hacia la derecha (por cáracter).
+- Ctrl + h: elimina el cáracter anterior al cursor.
+- Ctrl + k: corta toda la línea ubicada después del cursor al portapapeles.
+- Ctrl + L: limpia la pantalla.
+- Ctrl + n: recorre el historial hacia abajo.
+- Ctrl + p: recorre el historial hacia arriba.
+- Ctrl + s: detiene la salida del comando que esté en proceso (se sigue ejecutando, pero lo "silencia").
+- Ctrl + t: cambia de lugar los dos caracteres ubicados antes del cursor.
+- Ctrl + u: corta el contenido de la línea anterior al cursor al portapapeles.
+- Ctrl + w: corta la palabra anterior al cursor al portapapeles.
+- Ctrl + y: pega lo que sea que haya en el cortapapeles.
+- Ctrl + z: detiene el proceso que sea que se esté ejecutando (hay que usar el comando "fg" para que
+continúe).
+- Ctrl + _: deshace la acción que se haya hecho.
+- Alt + b: desplaza el cursor hacia la izquierda (por palabra).
+- Alt + c: convierte en mayúsculas el cáracter debajo del cursor y mueve a este último hacia el final
+de la palabra.
+- Alt + d: elimina la palabra ubicada después del cursor.
+- Alt + Del: lo mismo que lo anterior pero en vez de después, antes.
+- Alt + f: lleva el cursor hacia la derecha (por palabra).
+- Alt + l: convierte en minúsculas todos los caracteres desde el cursor hasta el final de la palabra
+actual.
+- Alt + r: si se está reutilizando un comando, lo modificamos pero nos arrepentimos, usamos este atajo
+para revertir lo cambiado.
+- Alt + u: similar a "Alt + l" pero en mayúsculas en vez de minúsculas.
+- Alt + t: invierte el orden de las dos últimas palabras anteriores al cursor.
+- Alt + . : recorre un "historial" de argumentos antes usados.

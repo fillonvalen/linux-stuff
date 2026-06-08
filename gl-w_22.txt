@@ -1,0 +1,78 @@
+22. Proceso Cron
+     Este proceso nos permite automatizar tareas, haciendo que se repitan cada
+cuanto deseemos. Cron, en un sistema, se usa de varias maneras. Primero, cada
+usuario, si lo desea, puede tener su propia "tabla" cron personal, todas
+guardadas en "/var/spool/cron/crontabs/" pero eso no quita que exista una tabla
+general en el archivo "/etc/crontab".
+     Si le echamos un vistazo, vamos a ver que las tareas a realizar se
+escriben de la siguiente manera:
+* * * * * user command
+| | | | |  |      +----> comando a ejecutar.
+| | | | |  +-----------> usuario bajo el cual se ejecuta el comando.
+| | | | +--------------> día de la semana (0-6) ó (1-7).
+| | | +----------------> mes (1-12).
+| | +------------------> día del mes (1-31).
+| +--------------------> hora del día (0-23).
++----------------------> minuto de la hora (0-59).
+
+     Hay que tener en cuenta que en los primeros cinco valores se puede usar
+un "*", que básicamente significa "cualquiera". También, en lo que respecta
+al día de la semana o el mes, puede usarse su valor numérico o emplear las
+primeras tres letras de su nombre en inglés. 
+
+ (Si con el día de la semana se emplea el rango 0-6, 0 es lo mismo  que
+domingo, mientras que si se emplea del 1-7, 7 es domingo)
+
+     Si quisieramos editar el crontab "local", tendríamos que usar el comando
+-crontab [option]
+
+     junto a la opción "-e".
+
+22.1. Anacron
+     El tema es que cron se pasa por el arco del triunfo las tareas que
+tendrían que haberse ejecutado, cuando, por ejemplo, la máquina estaba
+apagada, ya que supone que va a estar encendida todo el día. Entonces es
+cuando entra anacron, que soluciona este problema. Pero entonces ¿Para qué
+sirve cron? El tema de anacron es que, a diferencia de su hermano, no es un
+demonio (proceso que opera "en las sombras"), y necesita ser ejecutado, cosa
+de la que se encarga cron. A pesar de su diferencia con cron, está limitado a 
+tareas en períodos más estrictos, específicamente por día, por semana, o por
+mes.
+     De manera predeterminada, en "/etc", vamos a encontrarnos con directorios
+como "cron.daily/", o "cron.hourly/", que contienen diferentes programas los 
+cuales son ejecutados en el archivo "/etc/anacrontab", con el siguiente formato:
+period delay job-id cmd
+   |     |      |    +--> comando a ejecutar.
+   |     |      +-------> el "timestamp" a usar.
+   |     +--------------> minutos de demora si hay que ejecutar el programa.
+   +--------------------> período de días.
+	
+    La primera sección también puede tener una cadena de texto iniciada con
+"@", seguida de "daily", "weekly", o "monthly".
+     Anacron utiliza archivos ubicados en la carpeta "/var/spool/anacron".
+Si no hay nada es porque anacron todavía no ejecutó nunca nada. Pero si
+usamos el comando
+- anacron
+
+     seguido de la opción "-u", va a crear cuatro archivos que comienzan
+con "cron." y terminan o con "daily", "monthly", "weekly", o "yearly", todos
+conteniendo ocho números, que en realidad serían el año, mes y día a partir
+del cual va a contar anacron las veces que un comando debería de haberse
+ejecutado. Estos archivos son los "timestamps" (marcas de tiempo). Si se
+quisiera actualizar un solo timestamp, por ejemplo el "cron.daily", hay que
+usar la sintaxis: 
+$ anacron -u cron.daily
+
+     Si le echamos un vistazo al contenido de los directorios "/etc/cron.*",
+vamos a encontrarnos con "0anacron", archivo el cual se encarga de actualizar
+la marca de tiempo correspondiente, si es que pasó el tiempo requerido para
+llevar a cabo el programa.
+     Pero, como se menciona anteriormente, esto de los directorios con los
+programas a ejecutar es solo algo predeterminado. Si quisieramos, podríamos
+crear nuestros propios temporizadores con anacron, usando el formato
+anteriormente escrito.
+
+CONCLUSIÓN
+     Sí, yo también me pregunté la razón por la que no existen ambos como
+un solo programa. Por eso, personalmente prefiero usar alternativas como
+fcron, at, los timers de systemd, y demás.

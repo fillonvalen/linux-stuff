@@ -1,0 +1,33 @@
+4. INSTALANDO LINUX MINT (LMDE) PARA EL USUARIO
+
+PASOS
+01. Abrir el navegador.
+02. Buscar "linux mint".
+03. Presionar "Download".
+04. Elegir la edición que se desee (se recomienda Cinnamon), de todas maneras más adelante se verá
+cómo instalar otros Ambientes de escritorio.
+05. Presionar "Download".
+06. Buscar el mirror del país que se desee (en caso de que no esté el país, seleccionar "USA
+Harvard School of Engineering").
+07. Abrir VBox.
+08. Presionar "Nueva".
+09. Poner un nombre a la MV (Preferiblemente "Linux Mint user").
+10. Dejar la configuración de Hardware como está.
+11. Dejar la configuración del disco duro virtual como está.
+12. Presionar "Finalizar".
+13. Abrir la MV.
+14. Seleccionar el archivo .iso de LMDE.
+15. Presionar "Montar y reiniciar".
+16. Seleccionar el idioma de instalación "Inglés".
+17. Presionar "Install Linux Mint".
+18. Escribir "spanish" y seleccionar el mapa de teclado "Spanish (Latin American)".
+19. Seleccionar "Install multimedia codecs" (para poder reproducir ciertos formatos de vídeo y
+renderizar correctamente algunos sitios web).
+20. Seleccionar "Erase disk and install Linux Mint".
+21. Continuar con los cambios en el disco.
+22. Seleccionar el lugar que sea necesario.
+23. Insertar el nombre, crear e nombre de usuario, el de la computadora, y la contraseña.
+24. Reiniciar.
+25. Presionar Enter.
+26. Tour.
+

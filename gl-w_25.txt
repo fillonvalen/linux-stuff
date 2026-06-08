@@ -1,0 +1,72 @@
+2.5. LOCALES Y TIEMPO REGIONAL
+     Cuando se instala Debian, automáticamente pide tu regionalidad para saber
+qué hora poner en el sistema, y lo mismo para el lenguaje y el país, ya que
+por más que sea el mismo idioma, según el país puede cambiar la forma en la
+que por ejemplo se expresan los decimales, o el símbolo monetario, o la forma
+de escribir la fecha. Pero quizá instalamos otro sistema o surge la necesidad
+de cambiar estos valores, ¿Y cómo lo hacemos? Primero, para conocer todas las
+variables de la configuración regional, empleamos:
+- locale [options] [args]
+
+     A secas, el comando muestra la lista de todas las variables, que, si uno
+se fija, comienzan con "LC_", a excepción de dos. Hay bastantes, pero voy a 
+mencionar estas:
+* LANG: se encarga del lenguaje del sistema. Si no se especifica nada, o el
+mensaje no tiene traducción al idioma escrito, el valor predeterminado es el
+inglés.
+* LANGUAGE: esta es opcional
+* LC_ALL: sobreescribe con el valor que especifiquemos todas las variables que
+comienzen por "LC_".
+* LC_CTYPE: esta trata sobre reglas del manejo de caracteres, como son
+interpretados y categorizados.
+* LC_COLLATE: determina cómo las cadenas de texto son comparadas y ordenadas.
+* LC_MESSAGES: similar a LANG, determina el lenguaje de los mensajes que nos
+arroja por ejemplo la shell.
+* LC_PAPER: resulta que cada país tiene un formato de hoja (como A4, por
+ejemplo) estándar.
+* LC_NAME: determina la el orden y la manera de escribir nombres de personas.
+* LC_MEASUREMENT: se encarga de los estándares de medición (cm, millas, ...).
+
+     Estas variables, como se habrá notado, tienen una jerarquía, que
+vendría a ser la siguiente:
+LANGUAGE
+LC_ALL
+LC_*
+LANG
+
+     Sí, esto quiere decir que si por ejemplo LANG fuera es_ES.UTF-8 y 
+LC_MESSAGES=en_US.UTF-8, los mensajes no van a aparecer en español, sino en 
+inglés.
+
+25.1. CONFIGURANDO LOCALES
+     Para poder apreciar una lista de todos los locales disponibles en el
+sistema podemos darle un vistazo al directorio "/usr/share/i18n/locales",
+todos cumplen con este formato: idioma_país.
+     Si empleamos la opción "-a" con el comando "locale", nos va a mostrar
+una lista de los locales listos para usar en el sistema, y quizá sorprenda a
+uno ver que solo hay un solo locale, pero esto es porque para poder implementar
+un locale, primero hay que "compilarlo", y esto lo podemos hacer con la ayuda
+del comando:
+- localedef
+
+     El cual vamos a utilizar de la siguiente manera:
+$ localedef -i locale -f encoding locale+encoding
+
+ (Revisar O_2 respecto a "encoding")
+     
+     Luego de esto, vamos a dirigirnos al archivo "/etc/locale.conf", y vamos a
+escribir el nombre de la variable que queremos cambiar, seguida de "=" y el
+locale que el usuario desee, siempre y cuando esté compilado.
+
+25.1.1 LOCALE C
+     Existe un locale de nombre "C" (o POSIX, "Standard Operating System
+Interface", (La "X" proviene de Unix)), que es uno especial, creado con el
+objetivo de que sea el más simple, ya que por así decirlo, es un locale para
+las computadoras. Utiliza el conjunto de caracteres ASCII, cada caracter vale
+nada mas que un byte, la forma de ordenarlos es segun su valor, y el lenguaje
+es inglés de EE.UU.
+     Es útil para muchos casos, pero básicamente es para evitar que la
+configuración del usuario interfiera con cierto script, por ejemplo a la hora
+de manejar decimales, u ordenar letras.
+     Información más detallada:
+https://unix.stackexchange.com/questions/87745/what-does-lc-all-c-do

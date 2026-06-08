@@ -1,0 +1,61 @@
+27. COMPILACIÓN
+27.1. ETAPAS
+     El proceso de la compilación consiste en transformar código de alto
+nivel (más entendible para el humano, como JavaScript, C++, HTML, Python,
+etc) a uno de bajo nivel (más entendible para una computadora, como lo es
+el lenguaje ensamblador o el binario), también llamado código máquina. El
+responsable de esto es un programa llamado "compilador".
+     El proceso en sí se divide en varias partes, pero vamos a ver estas 6:
+1. Convierte el código en "tokens", siendo estos la unidad más pequeña en un
+lenguaje de programación (como "int" en C, u operadores, números, cadenas de
+texto, etc).
+2. En esta etapa se encarga de verificar que el código sigue ciertas reglas
+gramaticales establecidas, o sea que la sintáxis sea correcta.
+3. A continuación sigue el análisis semántico, en el cual se verifica que el
+código tenga sentido, porque por ejemplo si sumaramos una cadena de texto con
+un número, puede estar sintácticamente bien escrito pero eso no significa que
+sea una operación legal.
+4. Acá se genera un código intermediario, o IR (Intermediate Representation),
+que vendría a ser un puente entre el código fuente y el máquina, con la
+diferencia que esta representación no está atada a ninguna máquina en
+específico. Esto se da para poder estructurar y simplificar el programa y
+así bajar los recursos que puede llegar a consumir.
+5. El código intermediario es mejorado de vuelta.
+6. En la etapa final es cuando el código intermediario se transforma en
+lenguaje ensamblador o máquina (binario).
+
+27.2. MAKEFILES
+     A la hora de compilar un archivo, por ejemplo con código de C, utilizamos
+el comando "gcc", pero ¿Qué pasaría si tuvieramos que compilar 70 archivos
+con un solo comando? Bueno, acá es cuando entran los "makefiles", que son
+archivos usados junto al comando:
+- make [options] [command]
+
+     para establecer cómo construir e instalar cierto software, teniendo una
+estructura con reglas que nos permite establecer los prerequisitos, qué hay que
+construir, y qué comandos usar para la construcción.
+
+27.2.1. ESTRUCTURA
+     La forma en la que se establecen las reglas anteriormente mencionadasn en
+un archivo make o makefile es la siguiente:
+
+target: prerequisites
+	command
+	command
+	...
+
+     Donde "target" es el archivo que queremos construir, "prerequisites" una
+lista de los archivos y/o "targets" necesarios para la construcción, y 
+"command" una serie de comandos de la shell a ejecutar, todos prefijados con
+una tabulación (no espacios, tabulación). También simplemente puede tratarse
+de una secuencia de comandos o un comando con opciones que queramos ejecutar,
+sin necesidad de añadir ningún prerequisito.
+     Variables.
+     
+
+
+
+
+27.2. CONFIGURE
+27.4. CMAKE
+

@@ -1,0 +1,46 @@
+7. CLI, SHELL, TERMINAL, Y CONSOLA
+
+¿QUÉ ES UNA LÍNEA DE COMANDOS?
+     La Interfaz de línea de comandos, o CLI (Command-Line Interface, por sus siglas en inglés),
+consiste en cualquier forma de interactuar con la computadora a través de instrucciones que uno le
+va dando, línea por línea.
+
+¿QUÉ ES UN SHELL?
+     Vendría a ser un programa que permite ejecutar otros programas (como cd, ls, pwd, sudo, etc...) e imprimir la salida.También se pueden juntar y manipular las salidas de estos programas en una
+misma línea para funcionar como un lenguaje de programación, pero crudo.
+
+AH, ¿Y UNA TERMINAL?
+     Hubo una época en la que las computadoras abarcaban una habitación, estaban conectadas a una
+máquina de escribir y una impresora, siendo esta una manera de interactuar con la computadora,
+oseáse, las primeras terminales, como una forma de CLI. Después evolucionaron a las pantallas y a
+los teclados.
+
+     Hoy en día existen emuladores de terminal que nos permiten interactuar con la shell.
+
+¿Y UNA CONSOLA?
+     En el presente, consola y terminal son lo mismo, solo que este término se usa en Windows,
+mientras que terminal se usa para los sistemas operativos tipo UNIX.
+
+RESUMIDAMENTE
+     Uno abre una terminal para acceder al CLI, y se usa una shell para ejecutar ciertos comandos
+dentro de la terminal.
+
+ENTIENDO... ¿Y EL PROMPT?
+     Es nada más y nada menos cierto texto que aparece que dice: ¡Che, boludo, soy la shell!
+¡Dame una instrucción!
+
+LOGIN SHELL
+     Cuando un usuario inicia sesión a través de una terminal , o con SSH, o con el comando "su -",
+se abre una login shell, en la que se ejecutan ciertos códigos pre-configurados.
+NON-LOGIN SHELL
+
+BIBLIOGRAFÍA
+https://www.reddit.com/r/bash/comments/z1r0kb/whats_a_terminal_and_what_can_i_do_with_it_note/
+https://en.wikipedia.org/wiki/Computer_terminal
+https://superuser.com/questions/144666/what-is-the-difference-between-shell-console-and-terminal
+https://www.freecodecamp.org/news/cmd-line-for-beginners/
+https://www.youtube.com/watch?v=qqZE7sshuY8
+https://www.quora.com/What-is-the-difference-between-Terminal-CLI-CLT-and-Prompt
+https://www.geeksforgeeks.org/operating-systems/difference-between-terminalconsole-shell-and-cmd-line/
+https://www.reddit.com/r/learnprogramming/comments/wlfl8rwhats_the_difference_between_console_terminal/
+

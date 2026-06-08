@@ -1,0 +1,100 @@
+12. ADMINISTRADORES DE PAQUETES
+
+UTILIDAD
+     Como se explicó en el capítulo 1, los administradores de paquetes de software son muy útiles al permitir al usuario instalar programas de una
+manera sencilla, sin tener que buscar y descargar el código fuente del programa para después compilarlo y ahí recién poder instalarlo, tarea tediosa.
+
+NOTA
+     Aquí solo se verá cómo usar los administradores de paquetes de Debian, pero dependiendo del sistema operativo uno se puede topar con otros,
+como pacman, rpm, yum, zypper, etcétera… aunque todos cumplen la misma función.
+
+COMANDOS
+- dpkg [option] [action] [file]: con este podemos instalar paquetes "deb", que contienen la nomenclatura:
+
+[name]_[version number]-[revision number]_[arquitectura].deb
+
+     Una página en la que podemos encontrar y descargar estos archivos es enpkgs.org. Por ejemplo, para instalar el programa "mc" (Midnight Commander,
+que básicamente otorga una interfaz para navegar por los directorios y manipular archivos), haríamos lo siguiente:
+
+→Ir a la la página anterior escrita.
+→Ir al buscador (esquina superior derecha) y escribir "mc".
+→Bajar hasta encontrar el sistema operativo usado (en este caso, en la actual fecha, Ubuntu 25.10 ya que Linux Mint está basado en Ubuntu).
+→Presionar la opción para que se despliegue la lista y bajar hasta encontrar "mc_4.8.33-1.1_amd64.deb".
+→Presionar el link y bajar hasta la sección "Download", seleccionar y hacer clic derecho sobre el enlace de "Binary Package", abrirlo, seleccionar
+el directorio de destino, y esperar a que se mc_4.8.33-1.1_amd64.debdescargue el archivo.
+→Abrir la terminal, e ir al directorio donde se descargó el archivo.
+→Volver a la página, y fijarse en la sección "Requires" (más arriba de "Download"). Por cada paquetes en esta, escribir el comando dpkg con la opción -l
+(list), seguido del nombre o patrón. Por ejemplo: dpkg -l libc6 (esto es necesario porque son dependencias del archivo que sí o sí necesita)
+(si no se es el super-usuario, se tiene que usar el comando sudo antes de lo demás).
+→Si el paquete no aparece, volver a la página, presionar el link de la dependencia, y seleccionar la versión con la arquitectura necesaria
+(si en la parte de la arquitectura dice "all", es porque es válida para todas).
+→Para instalar un archivo ".deb", escribir de vuelta dpkg (o sudo dpkg) y usar la opción -i (install), seguido del nombre del paquete (recordar que
+escribiendo las primeras letras del archivo y presionando la tecla Tab, se autocompletará el nombre). Si no aparece error alguno, es porque la instalación salió bien.
+→Una vez todas las dependencias estén presentes, realizar el paso 9. pero con el paquete de "mc".
+→Si todo salió bien, con escribir "mc" en la terminal, se abrirá el programa (también se puede abrir como una aplicación en el escritorio).
+→para borrar un paquete, se usa la opción -r (remove), seguida del nombre.
+→Si se quiere borrar no solo el paquete, sino las dependencias, se utiliza la opción -P (Purge) seguida del nombre.
+→Si quisieramos saber los archivos instalados por el paquete, utilizamos la opción -L (list files) y luego el nombre.
+→Si se desea obtener información de determinado paquete, emplearíamos la opción -s seguida del nombre.
+
+ANTES DE SEGUIR
+     Ahora con el comando apt (Advanced Packaging Tool) es bastante diferente, ya que no hace falta buscar nada en ninguna página ni descargar archivos
+en el navegador. Directamente nos manejamos con la terminal y nada más.
+     Existe un archivo llamado "sources.list" en el directorio /etc/apt, que vendría a contener varias líneas similares a esta:
+
+deb http://deb.debian.org/debian/ buster main contrib non-free
+-A-|-------------B---------------|--C---|-----------D-----------
+
+     Estas son las direcciones de los servidores locales desde donde se instalarán o actualizarán los paquetes de Debian al usar el comando apt.
+En el directorio /etc/apt/sources.list.d también hay archivos con líneas parecidas ¡Tener en cuenta que en LMDE solo se tienen las listas de repositorios en
+/etc/apt/sources.list.d! (seguramente para tener los recursos en un solo lugar) Si utilizamos cat con el archivo "sources.list" solo veremos comentarios (las líneas que comienzan con "#").
+     Pero claro, ¿Qué signifca toda esa línea?
+A. Aquí se ve el tipo de archivo. Si dice "deb" es porque se trata de un repositorio de binarios pre-compilados, listos para usar. En cambio, si está
+"deb-src" quiere decir que es repositorio de archivos por compilar si se quieren usar en el sistema.
+
+B. En esta sección está la dirección del repositorio.
+
+C. En la presente sección o se encuentra el nombre clave de la distribución (actualmente, en LMDE, el nombre clave es Zena, y el de Debian 13 es Trixie,
+y esto lo podemos saber en la web o echándole un vistazo al archivo /etc/os-release) o está la fase en la que se encuentra la versión de Debian que estemos usando:
+stable (buster), testing (bullseye) o unstable (sid). En https://www.debian.org/releases/ podemos ver todas las versiones de Debian.
+
+D. Aquí pueden haber tres categorías, empezando por "main", que se refiere a los paquetes lanzados bajo una licencia de código abierto (como GPL) y la DFSG
+(Debian Free Software Guidelines) (Directrices de software libre de Debian). Luego puede estar "contrib", que solo están bajo la DFSG, pero cuyas dependencias
+entran en paquetes "non-free", que no están bajo la DFSG, y en cambio están bajo otras licencias que no permiten la redistribución del software.
+
+DFSG
+     ¿Qué carajos es esto? Es una licencia que establece ciertos principios de qué se considera "libre" en Debian, en resumidas cuentas.
+
+AHORA SÍ, APT
+     Antes de empezar con esta parte, hay que aclarar que primero existen dos comandos:
+- apt-get
+- apt-cache
+     Bien, el primero es para manejar los paquetes, y el segundo para consultar el caché y la base de datos de los paquetes Debian, permitiendo
+buscarlos en el sistema o listarlos. Lo que pasa es que está apt, que engloba las funciones de este par, así que por esa razón vamos a usar directamente este último comando.
+     Cabe decir que en las instrucciones ya sea para eliminar o instalar paquetes, se puede añadir al final o al principio la opción -y, que permite
+que la operación se ejecute sin antes pedirle confirmación al usuario, que es lo que hace de manera predeterminada.
+     Al igual que dpkg, este comando solo se puede utilizar siendo super-usuario o usando "sudo".
+- apt [cmd] [option]: en "cmd" se puede utilizar lo siguiente:
++ apt install [package]: para instalar el paquete.
++ apt reinstall [package]: para reinstalar el paquete.
++ apt remove [package]: para desinstalarlo.
+(se puede utilizar la opción --purge, para eliminar tanto el paquete como sus dependencias)
++ apt purge [package]: lo mismo que apt remove --purge.
++ apt autoremove: elimina las dependencias que ningún paquete necesite.
++ apt autoclean: elimina la caché para paquetes que no estén más disponibles.
+Resulta que a la hora de instalar un paquete con apt, este descarga el archivo ".deb" y sus dependencias, y una vez instalado todo, guarda los archivos
+en el directorio /var/cache/apt/archives (mientras se descargan van al directorio /var/cache/apt/archives/partial, pero después vuelven al anterior),
+y ahí es cuando se instala el programa. Y los archivos en el caché no se borran, debido a que si se necesita reinstalar alguno, sería más rápido tener
+los archivos que tener que buscarlos y descargarlos de vuelta. Bueno, con apt clean borramos la caché de apt, más que nada se usa por si se necesita liberar espacio en el disco.
++ apt update: con ayuda de los repositorios, se fija si hay paquetes que se puedan actualizar.
++ apt upgrade: actualiza los paquetes.
++ apt search [pattern]: para imprimir una lista de los paquetes disponibles que coincidan con el patrón especificado.
++ apt list: lista los paquetes manejados por el sistema.
++ apt depends [package]: muestra las dependencias del paquete escrito.
++ apt show [package]: muestra la descripción de un paquete, y recomienda otros que pueden mejorar la experiencia que se tiene con el paquete escrito.
+
+BIBLIOGRAFÍA
+https://linuxhint.com/debian_sources-list/
+https://forums.linuxmint.com/viewtopic.php?t=242143
+https://itsfoss.com/clear-apt-cache/
+

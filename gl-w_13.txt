@@ -1,0 +1,117 @@
+13. VIM 
+
+¿PARA QUÉ SIRVE?
+     Vim (Vi iMproveed) es un editor de texto, como nano, pero más complicado de aprender a usarlo, aunque una vez uno se acostumbra, se convierte en tu editor favorito.
+
+PARA OBTENERLO
+     Vim no viene de manera predeterminada en el sistema, pero sí Vi, que es una versión más vieja (incluso hoy en día existe neovim, pero aquí solo
+nos manejaremos con Vim), así que hay que instalarlo con apt. Basta con el comando
+
+sudo apt install vim -y.    
+
+NOTAS
+     Las siguiente información fue sacada del tutorial que contiene el programa vimtutor, que se puede ejecutar desde la terminal una vez instalado vim (personalmente lo recomiendo).
+     Tener en cuenta que si dice, por ejemplo, "A", quiere decir "Shift + a", que no es lo mismo que "a".
+
+CREAR ARCHIVO CON VIM
+     Escribiendo vim seguido del nombre que queramos, abrirá el programa directamente en ese archivo, creándolo si no existe.
+
+MODO NORMAL
+     Los comandos que se ejecutan presionando alguna tecla, solo van a funcionar en el Modo normal de Vim, al cual se accede presionando la tecla Esc.
+
+MOVER EL CURSOR
+h para moverlo hacia la izquierda.
+j hacia abajo.
+k hacia la derecha.
+l hacia arriba.
+     Sí, se pueden usar las flechas también, pero los mismos desarrolladores recomiendan usar estas teclas que permiten un recorrido más rápido una vez uno se acostumbra.
+Hay comandos que empezarán con ":", esto quiere decir que para ejecutarlos, primero hay que presionar ":", escribir el comando, y presionar Enter.
+Manipular archivos
+:q! para salir de Vim sin guardar los cambios.
+:w [nombre de archivo] guarda el archivo con el nombre que se desee (si no se quiere cambiar el nombre, no poner nada).
+:q sale de Vim solo si fueron guardados los cambios.
+:wq guarda y sale.
+:x lo mismo que wq.
+:! [comando] ejecutará desde la terminal el comando que sea que se escriba, parámetros incluidos.
+:r! [comando] pegará debajo del cursor la salida del comando que se escriba.
+:r [nombre de archivo] copiará debajo del cursor el contenido del archivo nombrado.
+
+EDICIÓN DE TEXTO
+- x se usa para borrar el cáracter que esté sobre el cursor.
+- i sirve para entrar al modo Inserción, y poder escribir detrás del cáracter en el que esté el cursor.
+- a cumple una función similar a i, pero en vez de detrás, delante del cáracter en el que se encuentre el cursor.
+Para volver al modo Normal, solamente hay que presionar Esc.
+- I es para entrar en el modo Inserción, dirigiendo el cursor al comienzo de la línea.
+- A es similar a I, pero en vez de dirigir el cursor al comienzo, lo hace al final.
+- dw primero presionamos d, y en la esquina inferior derecha se podrá ver la misma letra, esto quiere decir que Vim está esperando que presiones otra letra.
+Si presionamos w, borrará todo el texto hasta la siguiente palabra, excluyendo su primer cáracter.
+- d$ si presionamos $, borrará todo hasta el final de la línea, incluyendo el primer cáracter.
+- de si usamos e, eliminará el texto hasta el final de la palabra incluyendo el primer cáracter (es bastante similar a dw).
+- dd cumple la función de borrar la línea entera, guardándose en un registro de Vim (es como la función de cortar un archivo).
+- w sirve para moverse al principio de la siguiente palabra.
+- e se usa para moverse al final de la siguiente palabra.
+     Antes de una orden, podemos poner un número, y esa orden se repetirá la cantidad de veces que hayamos puesto. Por ejemplo, 3w es como ejecutar
+tres veces w, moviendo el cursor tres palabras más adelante.
+     Estructura de un comando de cambio de texto:
+
+[operador] (número) [movimiento]
+
+     [operador]: qué es lo que hay que hacer, como d, que sirve para eliminar.
+     (número): es opcional, y regula la cantidad de veces que se repite el [movimiento].
+     [movimiento]: son comandos para moverse por el texto en el que operar, como w (word), e (end of word), o $ (end of the line).
+
+- 0 (cero) manda el cursor al principio de la línea.
+- u para deshacer un cambio
+- U para deshacer todos los cambios que se hayan hecho en la línea en la que esté el cursor.
+- ctrl + r para deshacer lo que fue desecho.
+- p es usado con el fin de pegar el texto que esté guardado en el registro de Vim.
+- r tiene la función de entrar al modo Reemplazo, que permite hacer esto, un cáracter por otro (Primero presionar r sobre el cáracter que se desea
+reemplazar, y ahí presionar el cáracter que sea de reemplazo).
+- R es similar a r, pero permite reemplazar varios caracteres en vez de uno, por lo menos hasta que se vuelva al modo Normal.
+- ce es un operador y un movimiento, que borra todo hasta la siguiente palabra, y automáticamente se activa el modo de inserción.
+- cc hace lo mismo que ce, pero con la línea entera.
+Hay que tener en cuenta que todos los operadores pueden tener cualquiera de los movimiento, y eso quiere decir  que por ejemplo, c$ o cw son comandos válidos.
+- ctrl + g sirve para mostrar la ubicación del archivo actual, la línea en la que está el cursor, el total de líneas, y la columna en la que se ubica el cursor.
+- G tiene el funcionamiento de llevar el cursor al final del archivo.
+- gg hace lo contrario de G.
+- [número] G hace que el cursor vaya al número de línea que se haya puesto.
+- / seguido de una frase, buscará la misma hacia adelante.
+- ? seguido de una frase, la buscará hacia atrás.
+Si no se encontró lo que se buscaba y el archivo tiene mucho texto, se puede presionar n para que te diriga a los demás coincidencias hacia adelante,
+y N para lo mismo, pero en sentido contrario.
+- % sirve para que si el cursor está ubicado en un paréntesis, o en un corchete, o en una llave, moverá el cursor hacia el otro cáracter que cierre uno de estos tres (si hay).
+:s/old/new reemplaza con "new" al primer "old" que encuentre.
+:s/old/new/g reemplaza todos los "old" con "new" en la presente línea.
+:#,#s/old/new/g reemplaza con "new" todos los "old" que se encuentren entre las líneas indicadas (reemplazar # por el número).
+:%s/old/new/g reemplaza por "new" todos los "old" que estén en el archivo.
+:%s/old/new/gc la opción c sirve para que Vim pida confirmación de substitución cada vez que encuentre una coincidencia.
+- o ("o" minúscula)sirve para insertar una nueva línea debajo de la actual, e ingresar al modo inserción.
+- O ("o" mayúscula) hace lo mismo, pero en vez de abajo, arriba.
+- y es un operador que también se puede usar en el modo Visual, que sirve para copiar texto (texto que se guarda en el registro de Vim).
+- yy copia la línea entera.
+:set [opción] habilitará o deshabilitará la opción que se ponga.
+
+VENTANAS
+- ctrl + w para pasar de una ventana a otra.
+:split [archivo] aparecería arriba una ventana con el archivo deseado
+
+MODO VISUAL
+- v es usado para entrar al modo Visual, en el que se puede seleccionar un pedazo de texto según se vaya moviendo el cursor, hasta que un comando
+sea ejecutado (por ejemplo, si selecciono un trozo de texto, y presiono d, este se borrará, o si presiono :w FILE va a guardar un archivo aparte
+de nombre "FILE", que va a contener el pedazo de texto seleccionado. 
+- ctrl + q se usa para entrar en el modo Bloque Visual ¿Y para qué sirve? Bueno, supongamos que tenemos varias líneas en las que querramos añadir "#"
+al principio de las mismas. En Vim, se puede hacer de la siguiente manera: 
+→Presionar Ctrl + q en la primera línea que se desee editar.
+→Bajar el cursor hasta la última línea que se quiera editar.
+→Presionar I, y agregar "#".
+→Presionar Esc, y apreciar el resultado
+→Notar, que si se está en modo visual y se presiona ":", abajo no solo aparecerán los dos puntos, sino :'<,'>.
+
+¡AYUDA!
+:help abre una ventana con un archivo de ayuda general de Vim.
+:help [comando] abre una ventana con un archivo de ayuda del comando que se haya escrito.
+- ctrl + d si estamos en medio de la escritura de un comando que empiece con ":", podemos presionar esa combinación para que se nos muestre una lista
+de las posibles terminaciones que podemos usar. 
+- Tab se encarga de hacer algo similar a Ctrl + d, pero en vez de mostrar una lista, lo que estemos escribiendo se completará automáticamente
+(si hay más de una opción, se puede presionar Tab de vuelta para que se autocomplete con la siguiente).
+
