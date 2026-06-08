@@ -1,0 +1,31 @@
+int get_color_id (int piece_id);
+int king_threats_check (int *table,int king_color,int king_x,int king_y);
+int theorical_play (int _plays_no, int *_values, int *_main_table);
+int possible_plays (int *_main_table);
+void swap_player ();
+void get_algb_coor(int *dest_c, int n_play_x);
+void trans_play (int *n_play);
+void write_play(int piece_id, int s_x, int s_y, int e_x, int e_y,
+				bool capture, int status, int pp_id);
+void trans_piece_id (char *c_piece, int piece_id, bool print);
+void get_values (int *my_plays, int *values, int _plays_num, 
+				int *_main_table, bool opp_vals);
+void get_plays (int *_my_plays,int *_main_table);
+void ok_computer();
+void print_piece (int piece_id);
+bool is_s_piece (int *table,char piece_initial, int x, int y);
+bool is_my_piece (int *table, int x, int y);
+bool is_king_safe(int *table);
+bool is_valid (int *table,int s_x,int s_y,int d_x,int d_y,
+				int piece_id);
+bool is_box_bussy(int x,int y); 
+bool range_bishop(int *table,int s_x,int s_y,int d_x,int d_y);
+bool range_pawn(int *table,int s_x,int s_y,int d_x,int d_y,
+				int color);
+bool range_queen(int *table,int s_x,int s_y,int d_x,int d_y);
+bool range_rook(int *table,int s_x,int s_y,int d_x,int d_y);
+bool range_disrupted (int *table,int s_x,int s_y,int d_x,int d_y,
+				int piece_id);
+bool king_threatened (int x2comp,int y2comp, char pieces_inits[],
+				int opp_color);
+
