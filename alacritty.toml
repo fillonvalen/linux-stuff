@@ -1,0 +1,18 @@
+[window]
+dimensions={columns=80,lines=45}
+[font]
+normal.family="Comic Shanns"
+normal.style="Regular"
+bold.style="Regular"
+size=14
+offset.y=-10
+offset.x=-1
+glyph_offset.y=-6
+glyph_offset.x=-1
+[colors.primary]
+background="#000000"
+foreground="#aaaaaa"
+[cursor]
+blink_timeout=0
+#[X[
+#[
