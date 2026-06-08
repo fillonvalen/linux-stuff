@@ -1,0 +1,5 @@
+alias adu='sudo apt update && apt list --upgradable && sudo apt upgrade -y'
+alias get='sudo apt install'
+alias exterminate='sudo apt purge'
+alias clean='sudo apt autoremove -y'
+alias search='apt search'
