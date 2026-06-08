@@ -13,4 +13,8 @@ rm -rf linux-blog
 sudo xbps-remove -yoO
 
 git clone https://github.com/shannpersand/comic-shanns && mv comic-shanns/v2/*.ttf /usr/share/fonts/
+wget https://github.com/obsidianmd/obsidian-releases/releases/download/v1.12.7/Obsidian-1.12.7.AppImage
+
+mkdir -v Downloads Documents Pictures Videos
+mv -v Obsidian-1.12.7.AppImage Desktop/Obsidian
 fc-cache -f
