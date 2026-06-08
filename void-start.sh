@@ -23,6 +23,6 @@ find pi/ -name .gitkeep | xargs rm -v
 git clone https://github.com/shannpersand/comic-shanns && mv comic-shanns/v2/*.ttf /usr/share/fonts/ && rm -rf comic-shanns && fc-cache -f
 wget https://github.com/obsidianmd/obsidian-releases/releases/download/v1.12.7/Obsidian-1.12.7.AppImage
 
-#creatin folders
+#creating folders
 mkdir -v Downloads Documents Pictures Videos
 mv -v Obsidian-1.12.7.AppImage Desktop/Obsidian
