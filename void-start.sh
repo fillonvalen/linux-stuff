@@ -1,7 +1,7 @@
 cat alias > ~/.bash_aliases
 cat void-alias >> ~/.bash_aliases
 
-sudo xbps-install wget libX11 libX11-devel dhcpcd unzip zip firefox leafpad dwm st alacritty virtualbox-ose virtualbox-dkms clementine vlc dolphin dmenu eog gnome-calculator -y
+sudo xbps-install time fzf wget libX11 libX11-devel dhcpcd unzip zip firefox leafpad dwm st alacritty virtualbox-ose virtualbox-dkms clementine vlc dolphin dmenu eog gnome-calculator -y
 
 mv -v pinc/* /usr/include/
 rm -rv pinc/ 
