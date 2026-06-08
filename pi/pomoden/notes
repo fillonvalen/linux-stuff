@@ -1,0 +1,35 @@
+START POMODORO
+	You start the timer by typing:
+$ pcg [work-time] [break-time] [repetitions]
+	
+    work-time and break-time both must be in minutes (decimal values are not
+accepted), and repetitions can be -1, meaning "until the program exits". If
+you use this value, you will obtain points depending of the amount of times
+you finished a work-time timer to use them as whatever you want.
+    
+GARDEN
+    To enter the garden you just have to type the command with no value.
+    If you use points, you need 5 for a new plant, and 7 to make it grow to
+their next stage, but if not, you earn 5 for each pomodoro you established.
+	The garden will look something like this:
+
++-points 000-----+
+|░░░░░░░░░░░░░░░░|
+|░░░░░░░░░░░░░░░░|
+|░░░░░░░░░░░░░░░░|
+|░░░░░░░░░░░░░░░░|
+|░░░░░░░░░░░░░░░░|
+|░░░░░░░░░░░░░░░░|
+|░░░░░░░░░░░░░░░░|
+|░░░░░░░░░░░░░░░░|
++----------------+
+
+PLANTS
+	The possible states of a block can be:
+Nothing (░░): just grass. PS0
+finish two timers to make it grow again. PSD
+Growing (🌱): this is the first stage of a plant. PS1
+Keep growing(🌿): second stage of a plant. PS2
+You can do it! (🌳): third stage of a plant. PS3
+Dry (🪾 ): this happens if you break a pomodoro before finish it, having to
+Wow! (🌻): this will grow in your garden if you're lucky. PSL
