@@ -1,20 +1,28 @@
+#alias
 cat alias > ~/.bash_aliases
 cat void-alias >> ~/.bash_aliases
 
+#installing 
 sudo xbps-install time fzf wget libX11 libX11-devel dhcpcd unzip zip firefox leafpad dwm st alacritty virtualbox-ose virtualbox-dkms clementine vlc dolphin dmenu eog gnome-calculator -y
 
+#moving some stuff
 mv -v pinc/* /usr/include/
 mv -v {pi,gl_notes} ~
+mkdir -p ~/.config/alacritty/
+mv alacritty.toml ~/.config/alacritty/
+mv vi /usr/bin/mvi
 cd ~
+sudo cp pi/pal/pcal /usr/bin/pal
 
+#cleaning
 rm -rf linux-blog
 sudo xbps-remove -yoO
 find pi/ -name .gitkeep | xargs rm -v 
-sudo cp pi/pal/pcal /usr/bin/pal
 
-git clone https://github.com/shannpersand/comic-shanns && mv comic-shanns/v2/*.ttf /usr/share/fonts/
+#getting font and obsidian
+git clone https://github.com/shannpersand/comic-shanns && mv comic-shanns/v2/*.ttf /usr/share/fonts/ && rm -rf comic-shanns && fc-cache -f
 wget https://github.com/obsidianmd/obsidian-releases/releases/download/v1.12.7/Obsidian-1.12.7.AppImage
 
+#creatin folders
 mkdir -v Downloads Documents Pictures Videos
 mv -v Obsidian-1.12.7.AppImage Desktop/Obsidian
-fc-cache -f
