@@ -5,8 +5,7 @@ sudo xbps-install time fzf wget libX11 libX11-devel dhcpcd unzip zip firefox lea
 
 mv -v pinc/* /usr/include/
 rm -rv pinc/ 
-mv -v pi/ ~
-mv -v gnu-linux_pi/ ~
+mv -v {pi,gl_notes} ~
 cd ~
 
 rm -rf linux-blog
