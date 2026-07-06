@@ -1,4 +1,4 @@
-alias xi=´sudo xbps-install'
+alias xi='sudo xbps-install'
 alias xu='sudo xbps-install -Su'
 alias xr='sudo xbps-remove'
 alias xc='sudo xbps-remove -yoO'
