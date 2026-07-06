@@ -3,7 +3,7 @@ cat alias > ~/.bash_aliases
 cat void-alias >> ~/.bash_aliases
 
 #installing 
-sudo xbps-install time fzf wget libX11 libX11-devel dhcpcd unzip zip firefox leafpad dwm st alacritty virtualbox-ose virtualbox-dkms clementine vlc dolphin dmenu eog gnome-calculator -y
+sudo xbps-install time fzf fcft wget libX11 libX11-devel dhcpcd unzip zip firefox leafpad dwm st alacritty virtualbox-ose virtualbox-dkms clementine vlc dolphin dmenu eog gnome-calculator -y
 
 #moving some stuff
 mv -v pinc/* /usr/include/
@@ -12,14 +12,15 @@ mkdir -p ~/.config/alacritty/
 mv alacritty.toml ~/.config/alacritty/
 mv vi /usr/bin/mvi
 cd ~
-sudo cp pi/pal/pcal /usr/bin/pal
+sudo cp ~/pi/pal/pcal /usr/bin/pal
 
 #cleaning
-rm -rf linux-blog
+rm -rf linux-stuff
 sudo xbps-remove -yoO
-find pi/ -name .gitkeep | xargs rm -v 
+find ~/pi/ -name .gitkeep | xargs rm -v
 
 #getting font and obsidian
+mkdir -v /usr/share/fonts
 git clone https://github.com/shannpersand/comic-shanns && mv comic-shanns/v2/*.ttf /usr/share/fonts/ && rm -rf comic-shanns && fc-cache -f
 wget https://github.com/obsidianmd/obsidian-releases/releases/download/v1.12.7/Obsidian-1.12.7.AppImage
 
