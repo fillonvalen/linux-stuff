@@ -1,6 +1,7 @@
 #alias
 cat alias > ~/.bash_aliases
 cat void-alias >> ~/.bash_aliases
+source ~/.bash_aliases
 
 #installing 
 sudo xbps-install time fzf fcft wget libX11 libX11-devel dhcpcd unzip zip firefox leafpad dwm st alacritty virtualbox-ose virtualbox-dkms clementine vlc dolphin dmenu eog gnome-calculator -y
