@@ -5,7 +5,7 @@ source ~/.bash_aliases
 echo "source ~/.bash_aliases" >> ~/.bashrc
 
 #installing 
-sudo xbps-install time ncurses-libtinfo-devel libselinux-devel fzf fcft wget libX11 libX11-devel dhcpcd unzip zip firefox leafpad dwm st alacritty virtualbox-ose virtualbox-dkms clementine vlc dolphin dmenu eog gnome-calculator -y
+sudo xbps-install tmux time ncurses-libtinfo-devel libselinux-devel fzf fcft wget libX11 libX11-devel dhcpcd unzip zip firefox leafpad dwm st alacritty virtualbox-ose virtualbox-dkms clementine vlc dolphin dmenu eog gnome-calculator -y
 
 #moving some stuff
 mv -v pinc/* /usr/include/
