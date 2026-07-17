@@ -24,7 +24,7 @@ cp ~/pi/pal/pcal /usr/bin/pal
 echo -en "\033[0;96mCleaning...\033[0m"
 rm -rf ~/linux-stuff
 xbps-remove -yoO
-find ~/pi/ -name .gitkeep | xargs rm -v
+find /home/void/pi/ -name .gitkeep | xargs rm -v
 
 #getting font and obsidian
 mkdir -v /usr/share/fonts
