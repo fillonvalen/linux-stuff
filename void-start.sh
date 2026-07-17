@@ -8,7 +8,7 @@ echo "source ~/.bash_aliases" >> ~/.bashrc
 sudo xbps-install tmux time ncurses-libtinfo-devel libselinux-devel fzf fcft wget libX11 libX11-devel dhcpcd unzip zip firefox leafpad dwm st alacritty virtualbox-ose virtualbox-ose-dkms clementine vlc dolphin dmenu eog gnome-calculator -y
 
 #moving some stuff
-mv -v pinc/* /usr/#alias
+mv -v pinc/* /usr/include
 cat alias > ~/.bash_aliases
 cat void-alias >> ~/.bash_aliases
 source ~/.bash_aliases
