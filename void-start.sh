@@ -22,7 +22,7 @@ cp ~/pi/pal/pcal /usr/bin/pal
 
 #cleaning
 echo -en "\033[0;96mCleaning...\033[0m"
-rm -rf linux-stuff
+rm -rf ~/linux-stuff
 xbps-remove -yoO
 find ~/pi/ -name .gitkeep | xargs rm -v
 
