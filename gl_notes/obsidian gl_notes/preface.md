@@ -1,2 +1,1 @@
-1. A lo largo de todos los bloques van a aparecer conceptos que no son explicados en el momento, ya sea o porque se van a aclarar cuando sea necesario, o porque no vienen al caso y probablemente solo se de una vaga idea de qué se trata.
-2. 
+A lo largo de todos los bloques van a aparecer conceptos que no son explicados en el momento, ya sea o porque se van a aclarar cuando sea necesario, porque no vienen al caso y probablemente solo se dé una vaga idea de qué se trata, o porque estén en el bloque “concepts”.

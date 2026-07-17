@@ -1,4 +1,4 @@
-##### ETAPAS
+	##### ETAPAS
 El proceso de la compilación consiste en **transformar** código de alto nivel (más entendible para el humano, como JavaScript, C++, HTML, Python, etc) a uno de bajo nivel (más entendible para una computadora, como lo es el lenguaje ensamblador o el binario), también llamado código máquina. El responsable de esto es un programa llamado ***compilador***.
 El proceso en sí se divide en varias partes, pero vamos a ver estas 6:
 1. Convierte el código en ***tokens***, siendo estos la unidad **más pequeña** en un lenguaje de programación (como *int* en C, u operadores, números, cadenas de texto, etc).

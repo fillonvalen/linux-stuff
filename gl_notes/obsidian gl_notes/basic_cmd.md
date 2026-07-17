@@ -3,8 +3,8 @@
 >1. Cuando se trata de un comando que recibe un archivo, hay dos opciones: o se pone el nombre del archivo solo, o se escribe la ubicación exacta del archivo, empezando por el directorio raíz (`/`), o se empieza por el actual. Lo que pasa cuando no se comienza con el directorio raíz, es que estamos poniendo de manera predeterminada el actual, representado por un punto `.`, así que si nos encontraramos en `/home/johnny/Downloads`, y escribimos solo `ls games`, sería lo mismo que poner `ls ./games` (`/home/johnny/Downloads/games`), o si estuvieramos en `/usr/share` y escribiéramos solo `cd fonts`, es lo mismo que `cd ./fonts` (`/usr/share/fonts`).
 >2. Si se desea un resumen rápido del uso de cierto comando y sus opciones disponibles, la mayoría cuenta con la opción `-h` o `--help`.
 
-##### CONTROLANDO EL SISTEMA
-* `whoami` *option*: muestra el usuario registrado.
+##### Controlando el sistema
+- `whoami` *option*: muestra el usuario registrado.
 - `pwd` *option*: muestra el actual directorio.
 - `su` *options* *-* *user*: cambiar del usuario actuar al usuario "user".
 	- `su -`: cambia al super-usuario en una login shell, pidiendo antes la contraseña del mismo.
@@ -20,15 +20,15 @@
 	+ `-r`: lo mismo que el comando reboot.
 - `reboot` *options*: reinicia el sistema.
 - `uname` *options*: muestra información del sistema.
-+ `-a`: imprime toda la información.
-+ `-m`: imprime la arquitectura (*x86_64* quiere decir "extensión de arquitectura de 64 bits del grupo de instrucciones x86"), oséase amd64.
-+ `-n`: imprime el nombre de la computadora (hostname).
-+ `-o`: imprime el nombre del sistema operativo.
-+ `-r`: imprime la versión actual del kernel usado.
-+ `-s`: imprime el nombre del kernel.
-+ `-v`: imprime información más detallada de la versión del kernel, como la fecha de lanzamiento.
+	+ `-a`: imprime toda la información.
+	+ `-m`: imprime la arquitectura (*x86_64* quiere decir "extensión de arquitectura de 64 bits del grupo de instrucciones x86"), oséase amd64.
+	+ `-n`: imprime el nombre de la computadora (hostname).
+	+ `-o`: imprime el nombre del sistema operativo.
+	+ `-r`: imprime la versión actual del kernel usado.
+	+ `-s`: imprime el nombre del kernel.
+	+ `-v`: imprime información más detallada de la versión del kernel, como la fecha de lanzamiento.
 
-##### NAVEGANDO Y EXPLORANDO DIRECTORIOS
+##### Navegando y explorando directorios
 * `cd` *options* *directory*: la terminal se ubicará en el directorio especificado.
 	+ `cd -`: esta opción dirige al usuario al directorio en el que estuvo anteriormente.
 	+ `cd ~`: dirigirá al usuario a su correspondiente directorio dentro de `/home`, si existe. En caso del super-usuario, lo dirigirá a `/root`.
@@ -39,26 +39,28 @@
 - `ls` *options* *directory | file*: lista el contenido en varias columnas del directorio dir. Sin parámetros es lo mismo que `ls .`.
 	+ `-1`: lista el contenido de manera vertical.
 	+ `-l`: similar a `ls -1` pero mostrando información más detallada de los ficheros, por ejemplo:
-	`$ ls -l`
-	`total 32`
-	`drwxrwxr-x 2 laquid laquid 4096 Feb 5 13:01 Desktop`
-	`drwxrwxr-x 2 laquid laquid 4096 Feb 5 13:01 Documents`
-	`drwxrwxr-x 2 laquid laquid 4096 Feb 5 13:01 Downloads`
-	`drwxrwxr-x 2 laquid laquid 4096 Feb 5 13:01 Music`
-	`drwxrwxr-x 2 laquid laquid 4096 Feb 5 13:01 Pictures`
-	`drwxrwxr-x 2 laquid laquid 4096 Feb 5 13:01 Public`
-	`drwxrwxr-x 2 laquid laquid 4096 Feb 5 13:01 Templates`
-	`drwxrwxr-x 2 laquid laquid 4096 Feb 5 13:01 Videos`
-	A|------B------|C|---D---|----E----|---F---|--------G-------|------H------
-	* A: El primer carácter de esta sección da a entender de qué clase de objeto se trata (en este caso la “d” es de directorio).
-	* B: Los permisos.
-	* C: Aquí se expresan la cantidad de hardlinks que tiene el objeto.
-	* D: Usuario al que le pertenece el objeto.
-	* E: Grupo al que le pertenece el objeto.
-	* F: Espacio que ocupa (en bytes).
-	* G: Última vez que se accedió o modificó el directorio o archivo, en formato *Mes día_del_mes hh:mm*.
-	* H: Nombre del objeto.
-	+ `-a`: muestra los archivos ocultos (aquellos que comienzan con ".")
+	~~~
+	$ ls -l
+	total 32
+	drwxrwxr-x 2 laquid laquid 4096 Feb 5 13:01 Desktop
+	drwxrwxr-x 2 laquid laquid 4096 Feb 5 13:01 Documents
+	drwxrwxr-x 2 laquid laquid 4096 Feb 5 13:01 Downloads
+	drwxrwxr-x 2 laquid laquid 4096 Feb 5 13:01 Music
+	drwxrwxr-x 2 laquid laquid 4096 Feb 5 13:01 Pictures
+	drwxrwxr-x 2 laquid laquid 4096 Feb 5 13:01 Public
+	drwxrwxr-x 2 laquid laquid 4096 Feb 5 13:01 Templates
+	drwxrwxr-x 2 laquid laquid 4096 Feb 5 13:01 Videos
+	~~~
+  (A)(          B         )(C)(      D       )(     E       )(    F   )(             G             )(         H         )
+> **A**: El primer carácter de esta sección da a entender de qué clase de objeto se trata (en este caso la “d” es de directorio).
+> **B**: Los permisos.
+> **C**: Aquí se expresan la cantidad de hardlinks que tiene el objeto.
+> **D**: Usuario al que le pertenece el objeto.
+> **E**: Grupo al que le pertenece el objeto.
+> **F**: Espacio que ocupa (en bytes).
+> **G**: Última vez que se accedió o modificó el directorio o archivo, en formato *Mes día_del_mes hh:mm*.
+> **H**: Nombre del objeto.
++ `-a`: muestra los archivos ocultos (aquellos que comienzan con ".")
 	+ `-s`: muestra el tamaño de los archivos en kilobytes.
 		+ `-sh`: lo mismo que `ls -s`, pero más inteligible para los humanos.
 	+ `-t`: ordena los ficheros de manera cronológica según la fecha de acceso o modificación (primero el más reciente).
@@ -69,7 +71,7 @@
 - `dir` *options directory | file*: básicamente lo mismo que `ls`, pero con los parámetros `-C`, y `-b` (`ls -Cb`).
 - `file` *options file*: imprime qué tipo de archivo es *file*.
 
-##### MANIPULANDO ARCHIVOS
+##### Manipulando archivos
 - `clear` *options* limpia la terminal.
 - `touch` *options file*: en caso de existir el archivo *file*, modificará la fecha de acceso, y en caso contrario creará uno con el nombre filename. Si no se especifica directorio alguno, el archivo será modificado (si existe) o creado en el directorio actual.
 - `cat` *options file*: imprime el contenido que haya en `file`. 
@@ -95,52 +97,53 @@
 - `less` *options file*: visor de texto simple pero útil, utilizando una forma de navegación a través del contenido del archivo similar a Vim.
 - `nano` *options file*: editor de texto simple e intuitivo, ideal para usuarios nuevos en Linux a la hora de editar archivos en la terminal.
 
-##### RANGOS {..}
+##### Rangos
 Bash nos permite utilizar rangos a la hora de manipular archivos. Por ejemplo, si quisieramos crear treinta archivos, cada uno en el rango del 1 al 30, habría que escribir en la terminal
 `$ touch file{1..30}.txt`
 
 Si quisieramos eliminarlos, simplemente hay que cambiar `touch` por `rm`. Los rangos también funcionan alfabéticamente, siendo, por ejemplo `touch {a..h}` un comando válido que va a crear 8 archivos, cada uno con una letra del abecedario.	 A la inversa (poniendo primero el número/letra de mayor valor y luego el/la de menor valor) también funciona.
 
-##### CARACTERES COMODÍNES
+##### Caracteres comodínes
 - `*`: reemplaza cualquier cantidad y tipo de caracteres que le sigan a la anterior secuencia de caracteres hasta llegar a la siguiente.
 
-**EJEMPLOS**:
+**Ejemplos**:
  `ls *.c` 
-     listará solo los archivos que terminen en *.c*, sin importar la cantidad de caracteres que haya antes.
+Listará solo los archivos que terminen en *.c*, sin importar la cantidad de caracteres que haya antes.
+ 
  `ls a*.txt`
-     listará solo los archivos que empiecen con *a* y terminen con *.txt*, ignorando la cantidad de caracteres que haya en el medio.
+Listará solo los archivos que empiecen con *a* y terminen con *.txt*, ignorando la cantidad de caracteres que haya en el medio.
  `rm fi*`
-     borrará todos los archivos que comiencen por *fi*, sin tener en cuenta la cantidad de caracteres que le sigan
+Borrará todos los archivos que comiencen por *fi*, sin tener en cuenta la cantidad de caracteres que le sigan
 
 - `{}`: permite la manipulación de varios archivos en una misma línea.
 
-**EJEMPLOS**:
+**Ejemplos**:
  `mkdir /home/user{1,2,3}`
-     creará los subdirectorios *user1*, *user2*, y *user3* en el directorio `/home`.
-    
+Creará los subdirectorios *user1*, *user2*, y *user3* en el directorio `/home`.
+
  `touch /home/user1/Documents/doc{1,2,3}.odt`
-	 creará los archivos *doc1.odt*, *doc2.odt*, y *doc3.odt* en el directorio `/home/user1/Documents/`.
+Creará los archivos *doc1.odt*, *doc2.odt*, y *doc3.odt* en el directorio `/home/user1/Documents/`.
 
 - `?`: similar al comodín `*`, pero este sí tiene en cuenta la cantidad.
 
-**EJEMPLO:**
+**Ejemplo:**
  `ls -lsh b???.c`
-     imprimirá una lista detallada de los archivos que comiencen con *b*, que le sigan otros tres caracteres cualquieras, y que finalize con *.c*.
+Imprimirá una lista detallada de los archivos que comiencen con *b*, que le sigan otros tres caracteres cualquieras, y que finalize con *.c*.
 
 - `[a-b]` ó `[ab]`: este comodín tiene en cuenta el caracter (uno solo) que esté en un rango alfabético o númerico si es que hay una línea media de por medio (`-`). En caso contrario, se tendrán en cuenta solo los caracteres dentro de los corchetes.
 
-**EJEMPLOS:**
+**Ejemplos:**
  `rm [bdz]ash`
-     borrará aquellos archivos cuyo primer carácter sea o *b*, o *d*, o *z*, y sigan con *ash*.
-     
+Borrará aquellos archivos cuyo primer carácter sea o *b*, o *d*, o *z*, y sigan con *ash*.
+
  `ls -l file[0-9]`
-     listará todos los archivos que comiencen con *file* y el siguiente carácter sea un número entre el 0 y el 9.
+Listará todos los archivos que comiencen con *file* y el siguiente carácter sea un número entre el 0 y el 9.
 
 > [!warning]
 >No todos los comodines van a funcionar igual con todos los comandos. Por ejemplo, el comando `touch mytext[0-9].txt` creará el archivo
 >`mytext[0-9].txt` literalmente.
 
-##### UNIENDO COMANDOS
+##### Concatenando comandos
 Cuando ejecutamos un comando sin problemas, el estado de salida será `0`. Pero, por ejemplo, cuando ejecutamos ls nos dice que no encontró el archivo
 que le especificamos, el estado de salida será `2` u otro número. Esto lo podemos saber gracias a cierta variable de nombre `$?`. Así que si quisieramos
 saber el estado de salida del último comando ejecutado, tendríamos que imprimir dicha variable con el comando `echo`.
@@ -165,34 +168,33 @@ saber el estado de salida del último comando ejecutado, tendríamos que imprimi
 
 **EJEMPLOS:**
  `find /dev -name sd*`
-     imprimiría una lista de todos los archivos que comienzen con *sd* en el directorio `/dev`.
-     
- `find . -type d`
-     va a imprimir una lista de solamente los subdirectorios en el directorio actual, que vendría a ser `.`.
-     
- `find /etc -name *.conf -size +1M`
-     permite imprimir una lista de los archivos en /etc que terminen en *.conf* y ocupen un tamaño mayor a 1 mega.
-     
- `find / -atime -7`
-     hará una lista de todos los archivos del sistema a los que se haya accedido en los últimos 7 días.
-     
- `find /home -mmin +30 -name *.pdf`
-     imprimirá una lista de los archivos en el directorio `/home` que hayan sido modificados hace más de 30 minutos y cuyos nombres finalizen en *.pdf*.
-     
- `find /home -name test* -delete`
-     esta opción borrará todos los archivos en /home que comiencen con “test”.
-     
- `find ~/Pictures -iname abc* -exec mv {} ~/Documents`
-     moverá todos (`{}` quiere decir “todos los archivos que encuentres”) los archivos encontrados en `~/Pictures` que empiecen con *abc*, pero en caso insensitivo (esto quiere decir que no discrimina entre mayúsculas y minúsculas, asi que los archivos que comiecen con 
-     *AbC*, por ejemplo, serán validos por igual) a `~/Documents`.
-     
- `find / -size +100M 2>/dev/null`
-     permite listar todos los archivos en el directorio raíz que pesen más de 100 megas, y cualquier error (por ejemplo cuando el usuario no tiene permitido acceder a `/root`) (revisar la sección de operadores lógicos) será dirigido a `/dev/null`, que básicamente vendría a ser una especie de agujero negro digital, borrando los mensajes de error.
-     
-`find /var -name *.gz 1>~/vargz1.txt`
-     hace que todo lo que encuentre que termine con *.gz* lo mande al archivo *vargz1.txt* ubicado en `/home/johnny/` (`~`), a excepción de los errores (fijarse que hay un `1` en vez de un `2`).
+Imprimiría una lista de todos los archivos que comienzen con *sd* en el directorio `/dev`.
 
-##### Y ESTO, ¿CÓMO LO USO?
+ `find . -type d`
+Va a imprimir una lista de solamente los subdirectorios en el directorio actual, que vendría a ser `.`.
+
+ `find /etc -name *.conf -size +1M`
+Permite imprimir una lista de los archivos en /etc que terminen en *.conf* y ocupen un tamaño mayor a 1 mega. 
+
+ `find / -atime -7`
+Hará una lista de todos los archivos del sistema a los que se haya accedido en los últimos 7 días.
+
+ `find /home -mmin +30 -name *.pdf`
+Imprimirá una lista de los archivos en el directorio `/home` que hayan sido modificados hace más de 30 minutos y cuyos nombres finalizen en *.pdf*.
+ 
+ `find /home -name test* -delete`
+Esta opción borrará todos los archivos en /home que comiencen con “test”.
+ 
+ `find ~/Pictures -iname abc* -exec mv {} ~/Documents`
+Moverá todos (`{}` quiere decir “todos los archivos que encuentres”) los archivos encontrados en `~/Pictures` que empiecen con *abc*, pero en caso insensitivo (esto quiere decir que no discrimina entre mayúsculas y minúsculas, asi que los archivos que comiecen con  *AbC*, por ejemplo, serán validos por igual) a `~/Documents`.
+
+ `find / -size +100M 2>/dev/null`
+Permite listar todos los archivos en el directorio raíz que pesen más de 100 megas, y cualquier error (por ejemplo cuando el usuario no tiene permitido acceder a `/root`) (revisar la sección de operadores lógicos) será dirigido a `/dev/null`, que básicamente vendría a ser una especie de agujero negro digital, borrando los mensajes de error.
+
+`find /var -name *.gz 1>~/vargz1.txt`
+Hace que todo lo que encuentre que termine con *.gz* lo mande al archivo *vargz1.txt* ubicado en `/home/johnny/` (`~`), a excepción de los errores (fijarse que hay un `1` en vez de un `2`).
+
+##### Y esto, ¿cómo lo uso?
 - `man` *options section command*: mostrará el manual de *command*. Todos están en `/usr/share/man/`, donde hay varios subdirectorios (secciones), desde `man1` hasta `man9`:
 **1** para programas ejecutables o comandos del shell.
 **2** para llamadas del sistema (funciones del kernel).

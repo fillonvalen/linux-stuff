@@ -1,0 +1,71 @@
+##### ¿QUÉ ES ARCHIVAR?
+Archivar es básicamente como guardar determinados papeles con información en una caja de cartón hecha para esos papeles.
+
+##### ¿Y COMPRIMIR?
+Resulta que existen dos formas de compresión: con pérdida (lossy file compression) o sin pérdida (non-lossy file compressioni).
+
+##### LOSSY FILE COMPRESSION
+En esta forma de compresión cierta cantidad de información (ceros y unos) es eliminada, dejando solo lo más indispensable,
+por ejemplo cuando se comprime una imagen y su calidad baja.
+
+##### Non-lossy file compression1
+Esta manera, mediante cierto algoritmo (depende del programa de compresión que se use), detectar patrones en determinada información, y reemplazarlos por una clave de diccionario, o *dictionary key*, y luego empaquetar el archivo comprimido junto a este diccionario.
+Un ejemplo práctico que encontré en Reddit: tenemos la siguiente cita completamente aleatoria:
+
+*Si me engañas una vez, tuya es la culpa, si me engañas dos, es mía*.
+Vemos que “me” se repite más de una vez, por ende vamos a reemplazar “me” por **1**, quedando:
+
+*Si **1** engañas una vez, tuya es la culpa, si **1** engañas dos, es mía*.
+El término “engañas” se repite, así que vamos a ser lo mismo que antes, pero con **2**:
+
+*Si **1 2** una vez, tuya es la culpa, si **1 2** dos, es mía.*
+Por último, la palabra “es” es reiterada, y por tal razón va a ser reemplazada con **3**:
+
+*Si **1 2** una vez, tuya **3** la culpa, si **1 2** dos, **3** mía.*
+
+De esta manera, el diccionario se vería así:
+1 → me
+2 → engañas
+3 → es
+
+E inclusive se puede simplificar aún más porque lo que se repite más de una vez es la parte de *me engañas*, pudiendo quedar el diccionario de esta manera:
+1 →me engañas
+2 →es
+
+>En estos casos, hay diferencia entre mayúsculas y minúsculas (caso sensitivo), por eso “Si” y “si” no cuentan como iguales
+
+>[!Important]
+Los siguientes programas permiten medir el nivel de compresión (mientras más compresión, más va a tardar) del 1 al 9, lo único que hay que hacer es escribir el comando, después “-”, y a continuación el número.
+También, todos los que comprimen, tienen la opción -d que sería lo mismo que escribir el comando que permite descomprimir.
+
+##### Comandos
+- `gzip` *options data*: comprime información mediante ciertos algoritmos. Rápido en lo que respecta velocidad de compresión, pero poca compresión.
+- `gunzip` *options .gz file*: descomprime los archivos `.gz`.
+- `bzip2` *options data*: comprime información mediante otros algoritmos. Presenta un equilibrio entre la rapidez de compresión y cuánto comprime. Un poco más lento que *gzip*, pero presenta más capacidad de compresión.
+- `bunzip2` *options .bz2 file*: descomprime archivos `.bz2`.
+- `xz` *options data*: comprime información utilizando determinados algoritmos. Bastante eficaz a la hora de comprimir, pero lento.
+- `unxz` *options .xz file*: descomprime archivos `.xz`.
+- `tar` *options .tar file file*: comando que permite el archivado de información. Muy útil y utilizado a la par con los programas de compresión, creando archivos que por ejemplo terminan en `.tar.gz`.
+
+>A la hora de poner las opciones, con tar no hace falta insertar el guión medio `-`
+
++ `-c`: esta opción es para crear un nuevo archivo `.tar`.
++ `-x`: es para extraer el contenido de un archivo `.tar`.
++ `-t`: su función es única y exclusivamente listar el contenido de algún archivo `.tar`.
++ `-v`: este es el modo verboso, que en este caso deja ver toda la información que se va archivando o desarchivando.
++ `-f`: para cuando manipulamos archivos, esta opción es obligatoria.
++ `-r`: añadir archivos al final de un archivo `.tar`.
++ `-C` *directory*: opción útil para empaquetar o desempaquetar un archivo en el directorio que sea.
++ `-z`: utilizada para crear, extraer, listar, o manipular en general un archivo `.tar.gz`.
++ `-j`: lo mismo que `tar -z`, pero con archivos `.tar.bz2`.
++ `-J`: lo mismo, pero con archivos `.tar.xz`.
+
+**Ejemplos:**
+`tar -cvzf etc.tar.gz /etc`
+Creará el archivo "etc.tar.gz" (que vendría a ser el directorio /etc entero) en el directorio actual, mostrando todo lo que se va archivando y comprimiendo.
+
+`tar tjf etc.tar.bz2`
+Listará todo el contenido del archivo "etc.tar.bz2", sin extraer nada.
+
+`tar xvJf program.tar.xz`
+Va a descomprimir el archivo `program.tar.xz` mientras que podemos ver lo que va extrayendo.

@@ -10,4 +10,10 @@
  8. **Terminal**: Hubo una época en la que las computadoras abarcaban una habitación, estaban conectadas a una máquina de escribir y una impresora, siendo esta una manera de interactuar con la computadora, oseáse, las primeras terminales, como una forma de CLI. Después evolucionaron a las pantallas y a los teclados, como la Commodore 64. Hoy en día existen emuladores de terminal que nos permiten interactuar con la shell.
  9. **Consola**: En el presente, consola y terminal son lo mismo, solo que este término se usa en Windows, mientras que terminal se usa para los sistemas operativos tipo UNIX.
  10. **Prompt**: Es nada más y nada menos cierto texto que aparece que dice: ¡Soy la shell! ¡dame una instrucción!
- 11. 
+ 11. **Sector**: unidad básica de almacenamiento en un medio como un disco duro, equivaliendo a 512B o 4KB.
+ 12. **Bloque**: agrupación de uno o más sectores contiguos. Utilizados para mejorar el rendimiento y la eficiencia del acceso a los datos, el tamaño es variable según el sistema de archivos y las configuraciones del medio de almacenamiento que sea.
+ 13. **Superbloque**: estructura de datos en un sistema de archivos que contiene información importante sobre el mismo, como la capacidad total, número de sectores y bloques, etcétera.
+
+
+
+
