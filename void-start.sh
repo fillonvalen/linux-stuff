@@ -37,6 +37,8 @@ echo -en "\033[0;96mGetting Obsidian...\033[0m\n"
 wget https://github.com/obsidianmd/obsidian-releases/releases/download/v1.12.7/Obsidian-1.12.7.AppImage > /dev/null 2>&1
 
 #creating folders
-echo -en "\033[0;96mCreating folders\033[0m\n"
+echo -en "\033[0;96mCreating folders...\033[0m\n"
 mkdir Desktop Downloads Documents Pictures Videos
 mv Obsidian-1.12.7.AppImage Desktop/Obsidian
+echo -en "\033[0;96mReady!\033[0m"
+
