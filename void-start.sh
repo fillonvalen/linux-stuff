@@ -23,12 +23,14 @@ sudo cp ~/pi/pal/pcal /usr/bin/pal
 
 #cleaning
 echo -en "\033[0;96mCleaning...\033[0m"
-rm -rf linux-stuff
+rm -rf linux-stuff/
 sudo xbps-remove -yoO > /dev/null 2>&1
-find pi/ -name .gitkeep > /dev/null 2>&1 | xargs rm
+find pi/ -name .gitkeep > /dev/null 2>&1 | xargs -I{} rm {}
 
 #getting font and obsidian
-sudo mkdir /usr/share/fonts
+if [ ! -d /usr/share/fonts]; then
+  sudo mkdir /usr/share/fonts
+fi
 echo -en "\033[0;96mGetting comic shanns...\033[0m"
 git clone https://github.com/shannpersand/comic-shanns > /dev/null 2>&1 && sudo mv comic-shanns/v2/*.ttf /usr/share/fonts/ && rm -rf comic-shanns && fc-cache -f
 echo -en "\033[0;96mGetting Obsidian...\033[0m"
