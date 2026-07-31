@@ -34,8 +34,7 @@ find pi/ -name .gitkeep > /dev/null 2>&1 | xargs -I{} rm {}
 if [ ! -d /usr/share/fonts ]; then
   sudo mkdir /usr/share/fonts
 fi
-echo -en "$(CYAN)Getting comic shanns...$(CLR)\n"
-git clone https://github.com/shannpersand/comic-shanns > /dev/null 2>&1 && sudo mv comic-shanns/v2/*.ttf /usr/share/fonts/ && rm -rf comic-shanns && fc-cache -f
+
 echo -en "$(CYAN)Getting Obsidian...$(CLR)\n"
 wget https://github.com/obsidianmd/obsidian-releases/releases/download/v1.12.7/Obsidian-1.12.7.AppImage > /dev/null 2>&1
 
@@ -43,9 +42,14 @@ wget https://github.com/obsidianmd/obsidian-releases/releases/download/v1.12.7/O
 echo -en "$(CYAN)Creating folders...$(CLR)\n"
 mkdir Desktop Downloads Documents Pictures Videos
 mv Obsidian-1.12.7.AppImage Desktop/Obsidian
-echo -en "$(CYAN)Ready!$(CLR)"
 
 #setting .xinitrc and .Xresources
-echo -en "$(CYAN)Configuring .xinitrc and .Xresources...$(CLR)"
+echo -en "$(CYAN)Configuring .xinitrc and .Xresources...$(CLR)\n"
 echo -en "exec i3\nxrdb -merge .Xresources\nsource .bashrc" >> ~/.xinitrc
 echo -en "Xft.dpi: 196\nXcursor.theme: Adwaita\nXcursor.size: 32" >> ~/.Xresources
+
+#configure .vimrc
+echo -en "$(CYAN)Configuring .vimrc...$(CLR)\n"
+echo -en "filetype plugin indent on\nset title\nset tabstop=8\nset softtabstop=8\nset shiftwidth=8\nset noexpandtab\nhi Visual ctermbg=19 ctermfg=7" >> .vimrc
+
+echo -en "$(CYAN)Ready!$(CLR)\n"
