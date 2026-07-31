@@ -21,6 +21,7 @@ mv alacritty.toml ~/.config/alacritty/
 sudo rm /usr/bin/vi
 sudo mv vi /usr/bin/
 sudo chmod +x /usr/bin/vi
+mv vimrc ~/.vimrc
 cd ~
 sudo cp ~/pi/pal/pcal /usr/bin/pal
 
@@ -47,9 +48,5 @@ mv Obsidian-1.12.7.AppImage Desktop/Obsidian
 echo -en "$(CYAN)Configuring .xinitrc and .Xresources...$(CLR)\n"
 echo -en "exec i3\nxrdb -merge .Xresources\nsource .bashrc" >> ~/.xinitrc
 echo -en "Xft.dpi: 196\nXcursor.theme: Adwaita\nXcursor.size: 32" >> ~/.Xresources
-
-#configure .vimrc
-echo -en "$(CYAN)Configuring .vimrc...$(CLR)\n"
-echo -en "filetype plugin indent on\nset title\nset tabstop=8\nset softtabstop=8\nset shiftwidth=8\nset noexpandtab\nhi Visual ctermbg=19 ctermfg=7" >> .vimrc
 
 echo -en "$(CYAN)Ready!$(CLR)\n"
