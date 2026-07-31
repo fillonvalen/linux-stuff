@@ -20,14 +20,6 @@ sudo rm /usr/bin/vi
 sudo mv vi /usr/bin/
 sudo chmod +x /usr/bin/vi
 mv vimrc ~/.vimrc
-cd ~
-sudo cp ~/pi/pal/pcal /usr/bin/pal
-
-#cleaning
-echo -en "$(CYAN)Cleaning...$(CLR)\n"
-rm -rf linux-stuff/
-sudo xbps-remove -yoO > /dev/null 2>&1
-find pi/ -name .gitkeep > /dev/null 2>&1 | xargs -I{} rm {}
 
 #getting font and obsidian
 if [ ! -d /usr/share/fonts ]; then
@@ -39,12 +31,24 @@ wget https://github.com/obsidianmd/obsidian-releases/releases/download/v1.12.7/O
 
 #creating folders
 echo -en "$(CYAN)Creating folders...$(CLR)\n"
-mkdir Desktop Downloads Documents Pictures Videos
-mv Obsidian-1.12.7.AppImage Desktop/Obsidian
+mkdir ~/{Desktop,Downloads,Documents,Pictures,Videos}
+mv Obsidian-1.12.7.AppImage ~/Desktop/Obsidian
+
+#i3
+echo -en "$(CYAN)Configuring i3...$(CLR)\n"
+yes | sudo mv i3_stuff/i3status.conf /etc/i3status.conf
+cat i3_stuff/i3_conf_extra >> ~/.config/i3/config
 
 #setting .xinitrc and .Xresources
 echo -en "$(CYAN)Configuring .xinitrc and .Xresources...$(CLR)\n"
 echo -en "exec i3\nxrdb -merge .Xresources\nsource .bashrc" >> ~/.xinitrc
 echo -en "Xft.dpi: 196\nXcursor.theme: Adwaita\nXcursor.size: 32" >> ~/.Xresources
+
+#cleaning
+echo -en "$(CYAN)Cleaning...$(CLR)\n"
+cd ~
+rm -rf ~/linux-stuff/
+sudo xbps-remove -yoO > /dev/null 2>&1
+#find pi/ -name .gitkeep > /dev/null 2>&1 | xargs -I{} rm {}
 
 echo -en "$(CYAN)Ready!$(CLR)\n"
