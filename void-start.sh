@@ -5,11 +5,12 @@ OS=$(cat /etc/os-release | grep 'PRETTY_NAME' | sed -e "s/^.*=//g" -e 's/"//g')
 echo -en "This is a setup for your current OS: $(CYAN)$OS$(CLR).\n$(WHT)$(uname -s)$(CLR) version: $(CYAN)$(uname -r)$(CLR)\n"
 
 #alias
-cat alias > ~/.bash_aliases
+echo -en "$(CYAN)Setting alias...$(CLR)\n"
+cat alias/galias > ~/.bash_aliases
 if [ $1 == "void" ]; then
-  cat void-alias >> ~/.bash_aliases
+  cat alias/void-alias >> ~/.bash_aliases
 else 
-  cat apt-alias >> ~/.bash_aliases
+  cat alias/apt-alias >> ~/.bash_aliases
 fi
 source ~/.bash_aliases
 echo "source ~/.bash_aliases" >> ~/.bashrc
