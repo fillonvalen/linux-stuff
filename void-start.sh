@@ -16,8 +16,6 @@ echo -en "$(CYAN)Moving and renaming stuff...$(CLR)\n"
 sudo mv pinc/* /usr/include/
 mv pi ~
 mv gl_notes ~
-mkdir -p ~/.config/alacritty/
-mv alacritty.toml ~/.config/alacritty/
 sudo rm /usr/bin/vi
 sudo mv vi /usr/bin/
 sudo chmod +x /usr/bin/vi
