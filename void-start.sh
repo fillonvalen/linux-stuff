@@ -6,7 +6,7 @@ echo "source ~/.bash_aliases" >> ~/.bashrc
 
 #installing
 echo -en "\033[0;96mInstalling programs, cozy up...\033[0m\n"
-sudo xbps-install wget tmux time ncurses-libtinfo-devel libselinux-devel fzf fcft wget libX11 libX11-devel dhcpcd unzip zip firefox leafpad dwm st alacritty virtualbox-ose virtualbox-ose-dkms clementine vlc dolphin dmenu eog gnome-calculator -y > /dev/null 2>&1
+sudo xbps-install wget tmux time ncurses-libtinfo-devel libselinux-devel fzf fcft wget libX11 libX11-devel dhcpcd unzip zip firefox leafpad i3 i3-status xorg xfce4-terminal alacritty virtualbox-ose virtualbox-ose-dkms clementine vlc dolphin dmenu eog gnome-calculator -y > /dev/null 2>&1
 
 #moving some stuff
 echo -en "\033[0;96mMoving and renaming stuff...\033[0m\n"
