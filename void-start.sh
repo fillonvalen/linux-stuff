@@ -18,7 +18,7 @@ echo "source ~/.bash_aliases" >> ~/.bashrc
 #installing
 echo -en "$(CYAN)Installing programs, cozy up...$(CLR)\n"
 if [ $1 == "void" ]; then
-  sudo xbps-install wget tmux pavucontrol time ncurses-libtinfo-devel libselinux-devel fzf fcft libX11 libX11-devel dhcpcd unzip zip firefox leafpad i3 i3-status xorg dmenu xfce4-terminal alacritty virtualbox-ose virtualbox-ose-dkms clementine vlc dolphin eog gnome-calculator -y > /dev/null 2>&1
+  sudo xbps-install wget tmux pavucontrol time ncurses-libtinfo-devel libselinux-devel fzf fcft libX11 libX11-devel dhcpcd unzip zip firefox thunderbird leafpad i3 i3-status xorg dmenu xfce4-terminal alacritty virtualbox-ose virtualbox-ose-dkms clementine vlc dolphin eog gnome-calculator -y > /dev/null 2>&1
 else
   sudo apt install tmux wget time fzf firefox xfce4-terminal alacritty virtualbox-ose virtualbox-ose-dkms clementine vlc dolphin -y > /dev/null 2>&1
 fi
@@ -66,6 +66,10 @@ if [ $1 == "void" ]; then
   echo -en "exec i3\nxrdb -merge .Xresources\nsource .bashrc" >> ~/.xinitrc
   echo -en "Xft.dpi: 196\nXcursor.theme: Adwaita\nXcursor.size: 32" >> ~/.Xresources
 fi
+
+#configuring tmux
+echo -en "$(CYAN)Configuring tmux...$(CLR)\n"
+mv tmux.conf ~/.tmux.conf
 
 #cleaning
 echo -en "$(CYAN)Cleaning...$(CLR)\n"
