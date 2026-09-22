@@ -4,11 +4,17 @@ CLR="\033[0m"
 OS=$(cat /etc/os-release | grep 'PRETTY_NAME' | sed -e "s/^.*=//g" -e 's/"//g')
 echo -en "This is a setup for your current OS: $(CYAN)$OS$(CLR).\n$(WHT)$(uname -s)$(CLR) version: $(CYAN)$(uname -r)$(CLR)\n"
 
-chmod +x {alias,stuff-move,osd,tmux-conf}.sh
 
 #alias
 echo -en "$(CYAN)Setting alias...$(CLR)\n"
-./alias.sh > /dev/null 2>&1  
+cat alias/galias > ~/.bash_aliases
+if [ $1 == "void" ]; then
+  cat alias/void-alias >> ~/.bash_aliases
+else 
+  cat alias/apt-alias >> ~/.bash_aliases
+fi
+source ~/.bash_aliases
+echo "source ~/.bash_aliases" >> ~/.bashrc
 
 #installing
 echo -en "$(CYAN)Installing programs, cozy up...$(CLR)\n"
@@ -19,7 +25,16 @@ else
 fi
 
 #moving some stuff
-./stuff-move.sh
+echo -en "$(CYAN)Moving and renaming stuff...$(CLR)\n"
+sudo mv pinc/* /usr/include/
+mv pi ~
+mv gl_notes ~
+mv vimrc ~/.vimrc
+sudo rm /usr/bin/vi
+sudo mv xs/vi /usr/bin/
+sudo chmod +x /usr/bin/vi
+sudo mv xs/pal /usr/bin/
+sudo chmod +x /usr/bin/pal
 
 #creating fonts directory if doesn't exist
 if [ ! -d /usr/share/fonts ]; then
@@ -27,7 +42,10 @@ if [ ! -d /usr/share/fonts ]; then
 fi
 
 #getting obsidian
-./osd.sh
+echo -en "$(CYAN)Getting Obsidian...$(CLR)\n"
+wget https://github.com/obsidianmd/obsidian-releases/releases/download/v1.12.7/Obsidian-1.12.7.AppImage > /dev/null 2>&1
+sudo mv Obsidian-1.12.7.AppImage /bin/osd
+sudo chmod +x /bin/osd
 
 #creating folders
 echo -en "$(CYAN)Creating folders...$(CLR)\n"
@@ -51,9 +69,17 @@ if [ $1 == "void" ]; then
 fi
 
 #configuring tmux
-./tmux-conf.sh
+echo -en "$(CYAN)Configuring tmux...$(CLR)\n"
+mv tmux.conf ~/.tmux.conf
 
 #cleaning
-./clean.sh
+echo -en "$(CYAN)Cleaning...$(CLR)\n"
+cd ~
+rm -rf ~/linux-stuff/
+if [ $1 == "void" ]; then
+  sudo xbps-remove -yoO > /dev/null 2>&1
+else
+  apt autoremove -y > /dev/null 2>&1
+fi
 
 echo -en "$(CYAN)Ready!$(CLR)\n"
