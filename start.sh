@@ -17,7 +17,7 @@ source ~/.bash_aliases
 echo "source ~/.bash_aliases" >> ~/.bashrc
 
 #installing
-echo -en "$CYAN-->Installing programs, cozy up...$CLR\n"
+echo -en "$CYAN--> Installing programs, cozy up...$CLR\n"
 if [[ $1 == "void" ]]; then
   sudo xbps-install wget tmux pavucontrol time ncurses-libtinfo-devel libselinux-devel fzf fcft libX11 libX11-devel dhcpcd unzip zip firefox thunderbird leafpad i3 i3-status xorg dmenu xfce4-terminal alacritty virtualbox-ose virtualbox-ose-dkms clementine vlc dolphin eog gnome-calculator -y > /dev/null 2>&1
 else
